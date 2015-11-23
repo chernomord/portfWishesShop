@@ -1,0 +1,38 @@
+section
+    .container
+        .page-header
+            h1 Ваша корзина
+    .container
+        table.table.table-hover.basket
+            thead
+                tr
+                    th Фото
+                    th Название
+                    th Цена
+                    th.cell__counter Количество
+                    th
+            tbody
+                tr
+                    td
+                        img.img-responsive(src="goods/hugs.gif", style='width: 100px; display: block;')
+                    td
+                        a(href='#') Обнимашки
+                        p А тут сокращенное описание позиции
+                    td
+                        | 12
+                    td
+                        .input-group.basket__counter
+                            span.input-group-btn
+                                button.btn.btn-default
+                                    span.plyphicon.glyphicon-minus
+                            input.form-control.input-number(value="1")
+                            span.input-group-btn
+                                button.btn.btn-default
+                                    span.plyphicon.glyphicon-plus
+                    td
+                        button.btn.btn-default Удалить
+        .row
+            .col-md-6.col-md-offset-6.text-right
+                h3 Всего:
+                    span 456
+                button.btn.btn-primary Оформить заказ

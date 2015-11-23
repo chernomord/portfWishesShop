@@ -1,0 +1,108 @@
+//
+   Created by Slava on 13.11.2015.
+
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0")
+        title Купи кодинг за кошачий корм!
+        //link(href='https://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css')
+        link(href="css/bootstrap.min.css",rel="stylesheet")
+        link(href="css/styles.css",rel="stylesheet")
+        //script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js")
+        script(src="../bower_components/angular/angular.min.js")
+        script(src="../bower_components/ng-tags-input/ng-tags-input.min.js")
+        script(src="../bower_components/angular-route/angular-route.js")
+        script(src="../bower_components/angular-ui/build/angular-ui.js")
+        //script(src="../bower_components/bootstrap/dist/js/bootstrap.js")
+        script(src="js/app.js")
+        script(src="js/filters.js")
+    body(ng-app="funshopApp")
+        div.navbsr.navbar-static-top.root__nav
+            .container
+                ul.nav.navbar-nav
+                    li
+                        a.btn.btn-sm.disabled(href='#') Войти
+                    li
+                        a.btn.btn-sm(href='#') Зачем это все
+
+                ul.nav.navbar-nav.navbar-right
+                    li.dropdown
+                        a.dropdown-toggle.btn.btn-sm.disabled(href='', data-toggle='dropdown')
+                            | Язык
+                            span.caret
+                        ul.dropdown-menu
+                            li
+                                a(href='#') Русский
+                            li
+                                a(href='#') English
+        .jumbotron
+            .container
+                h1 Виртуальные няшки
+                p Возьми няшку и накорми кота!
+        section(ng-controller='goodiesListCtrl')
+            nav.navbar.navbar-default.categories__nav
+                .container
+                    .navbar-header
+                        button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false")
+                            span.sr-only Toggle navigation
+                            span.icon-bar
+                            span.icon-bar
+                            span.icon-bar
+                        a.navbar-brand(href="#") Моё!
+                    #bs-example-navbar-collapse-1.collapse.navbar-collapse
+                        ul.nav.navbar-nav
+                            li
+                                a(href="#")
+                                    | Все
+                            li(ng-repeat='category in categories')
+                                //.active
+                                a(href='#' ng-click='')
+                                    | {{category.name}}
+                                    //span.sr-only (current)
+                        ul.nav.navbar-nav.navbar-right
+                            li
+                                button(type='button').btn.btn-default.navbar-btn.disabled Корзинка
+                                    .badge 4
+            .container
+                .row
+                    .col-md-3
+                        h3 Фильтр
+                        h5 Бренд
+                        select.form-control.input-sm(data-ng-model="search.brand")
+                            option(label="Все бренды" value="") Все бренды
+                            option(ng-repeat="goodie in goodies | unique:'brand'" value="{{goodie.brand}}") {{goodie.brand}}
+                        h5 Название
+                        input.form-control.input-sm(type='text', placeholder='Название', ng-model="search.name")
+                        //h5 Теги
+                        h5 Цена
+                        form.form-inline
+                            .input-group.col-md-5
+                                .input-group-addon от
+                                input.form-control.input-sm(type="number" ng-model="price.min")
+                            .input-group.col-md-5
+                                .input-group-addon до
+                                input.form-control.input-sm(type="number" ng-model="price.max")
+                        h5 Теги
+                        tags-input(data-ng-model="queryTags")
+                            auto-complete(source="loadTags($query)")
+                    .col-md-9
+                        .row
+                            .col-sm-6.col-md-4(ng-repeat='goodie in goodies | filter:search | byRange:price:"price" | byTags:queryTags:"tags"')
+                                .thumbnail
+                                    img.img-responsive(src="goods/hugs.gif", style='width: 100%; display: block;')
+                                    .caption
+                                        h3(ng-bind="goodie.name")
+                                        p(ng-bind="goodie.description")
+                                        h4(ng-bind="goodie.price | currency:'р. '")
+                                        p
+                                            a.btn.btn-primary(href='#', role='button')
+                                                | В миску
+                                            | &nbsp;
+                                            a.btn.btn-default(href='#', role='button')
+                                                | Подробнее
+
+        //include partials/basket.jade
+        //include partials/about.jade
+        //include partials/check-out.jade
