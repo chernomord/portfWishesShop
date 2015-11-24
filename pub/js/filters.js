@@ -49,4 +49,16 @@ angular.module('funshopFilters', [])
                 return matchedResults;
             }
         }
+    })
+    .filter('myUnique', function() {
+        return function(input, prop) {
+
+            var filtered = unique(input, prop);
+
+            var results = [];
+            for (var i = 0; i < filtered.length; i++) {
+                results.push(filtered[i]);
+            }
+            return results;
+        }
     });
