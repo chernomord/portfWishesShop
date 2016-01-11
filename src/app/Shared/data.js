@@ -3,6 +3,7 @@
  */
 var storage = [
     {
+        'uid':'001',
         'name':'Обнимашки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -17,6 +18,7 @@ var storage = [
         ]
     },
     {
+        'uid':'002',
         'name':'Грустняшки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -29,6 +31,7 @@ var storage = [
         ]
     },
     {
+        'uid':'003',
         'name':'Радуга',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -41,6 +44,7 @@ var storage = [
         ]
     },
     {
+        'uid':'004',
         'name':'Удивление',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -53,6 +57,7 @@ var storage = [
         ]
     },
     {
+        'uid':'005',
         'name':'Обнимашки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -67,6 +72,7 @@ var storage = [
         ]
     },
     {
+        'uid':'006',
         'name':'Грустняшки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -79,6 +85,7 @@ var storage = [
         ]
     },
     {
+        'uid':'007',
         'name':'Радуга',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -91,6 +98,7 @@ var storage = [
         ]
     },
     {
+        'uid':'008',
         'name':'Удивление',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -103,6 +111,7 @@ var storage = [
         ]
     },
     {
+        'uid':'009',
         'name':'Обнимашки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -117,6 +126,7 @@ var storage = [
         ]
     },
     {
+        'uid':'010',
         'name':'Грустняшки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -129,6 +139,7 @@ var storage = [
         ]
     },
     {
+        'uid':'011',
         'name':'Радуга',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -141,6 +152,7 @@ var storage = [
         ]
     },
     {
+        'uid':'012',
         'name':'Удивление',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -153,6 +165,7 @@ var storage = [
         ]
     },
     {
+        'uid':'013',
         'name':'Обнимашки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -167,6 +180,7 @@ var storage = [
         ]
     },
     {
+        'uid':'014',
         'name':'Грустняшки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -179,6 +193,7 @@ var storage = [
         ]
     },
     {
+        'uid':'015',
         'name':'Радуга',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -191,6 +206,7 @@ var storage = [
         ]
     },
     {
+        'uid':'016',
         'name':'Удивление',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -203,6 +219,7 @@ var storage = [
         ]
     },
     {
+        'uid':'017',
         'name':'Обнимашки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -217,6 +234,7 @@ var storage = [
         ]
     },
     {
+        'uid':'018',
         'name':'Грустняшки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -229,6 +247,7 @@ var storage = [
         ]
     },
     {
+        'uid':'019',
         'name':'Радуга',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -241,6 +260,7 @@ var storage = [
         ]
     },
     {
+        'uid':'020',
         'name':'Удивление',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -253,6 +273,7 @@ var storage = [
         ]
     },
     {
+        'uid':'021',
         'name':'Обнимашки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -267,6 +288,7 @@ var storage = [
         ]
     },
     {
+        'uid':'022',
         'name':'Грустняшки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -279,6 +301,7 @@ var storage = [
         ]
     },
     {
+        'uid':'023',
         'name':'Радуга',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -291,6 +314,7 @@ var storage = [
         ]
     },
     {
+        'uid':'024',
         'name':'Удивление',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -303,6 +327,7 @@ var storage = [
         ]
     },
     {
+        'uid':'025',
         'name':'Обнимашки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -317,6 +342,7 @@ var storage = [
         ]
     },
     {
+        'uid':'026',
         'name':'Грустняшки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -329,6 +355,7 @@ var storage = [
         ]
     },
     {
+        'uid':'027',
         'name':'Радуга',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -341,6 +368,7 @@ var storage = [
         ]
     },
     {
+        'uid':'028',
         'name':'Удивление',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -353,6 +381,7 @@ var storage = [
         ]
     },
     {
+        'uid':'029',
         'name':'Обнимашки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -367,6 +396,7 @@ var storage = [
         ]
     },
     {
+        'uid':'030',
         'name':'Грустняшки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -379,6 +409,7 @@ var storage = [
         ]
     },
     {
+        'uid':'031',
         'name':'Радуга',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -391,6 +422,7 @@ var storage = [
         ]
     },
     {
+        'uid':'032',
         'name':'Удивление',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -403,6 +435,7 @@ var storage = [
         ]
     },
     {
+        'uid':'033',
         'name':'Обнимашки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -417,6 +450,7 @@ var storage = [
         ]
     },
     {
+        'uid':'034',
         'name':'Грустняшки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -429,6 +463,7 @@ var storage = [
         ]
     },
     {
+        'uid':'035',
         'name':'Радуга',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -441,6 +476,7 @@ var storage = [
         ]
     },
     {
+        'uid':'036',
         'name':'Удивление',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -453,6 +489,7 @@ var storage = [
         ]
     },
     {
+        'uid':'037',
         'name':'Обнимашки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -467,6 +504,7 @@ var storage = [
         ]
     },
     {
+        'uid':'038',
         'name':'Грустняшки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -479,6 +517,7 @@ var storage = [
         ]
     },
     {
+        'uid':'039',
         'name':'Радуга',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -491,6 +530,7 @@ var storage = [
         ]
     },
     {
+        'uid':'040',
         'name':'Удивление',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -503,6 +543,7 @@ var storage = [
         ]
     },
     {
+        'uid':'041',
         'name':'Обнимашки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -517,6 +558,7 @@ var storage = [
         ]
     },
     {
+        'uid':'042',
         'name':'Грустняшки',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -529,6 +571,7 @@ var storage = [
         ]
     },
     {
+        'uid':'043',
         'name':'Радуга',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -541,6 +584,7 @@ var storage = [
         ]
     },
     {
+        'uid':'044',
         'name':'Удивление',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',
@@ -553,6 +597,7 @@ var storage = [
         ]
     },
     {
+        'uid':'045',
         'name':'Ми-ми-ми',
         'description':'Описание товара и все такое вообще, ага',
         'image':'goods/hugs.gif',

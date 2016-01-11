@@ -1,0 +1,13 @@
+//- catalogue goodie card template
+.thumbnail
+    img.img-responsive(ng-src="{{product.image}}", style='width: 100%; display: block;')
+    .caption
+        h3(ng-bind="product.name")
+        p(ng-bind="product.description")
+        h4(ng-bind="product.price | currency:'р. '")
+        p
+            a.btn.btn-primary(href='#', role='button')
+                | В миску
+            | &nbsp;
+            a.btn.btn-default(href='#', role='button')
+                | Подробнее
