@@ -1,7 +1,3 @@
-/**
- * Created by Slava on 21.11.2015.
- */
-
 catalogueModule.filter('byRange', function() {
     return function(input, rangeObj, prop) {
         var results = [];
@@ -9,13 +5,14 @@ catalogueModule.filter('byRange', function() {
         if (rangeObj === undefined || rangeObj == null || (rangeObj.min === null && rangeObj.max === null)) return input;
         // when .min undef
         else if (rangeObj.min === undefined || rangeObj.min === null) {
+            if (rangeObj.max == 0) return input;
             for (var i = 0; i < input.length; i++) {
                 if (input[i][prop] <= rangeObj.max) results.push(input[i]);
             }
             return results;
         }
-        // when .max undef
-        else if (rangeObj.max === undefined || rangeObj.max === null) {
+        // when .max undef or zero
+        else if (rangeObj.max === undefined || rangeObj.max === null || rangeObj.max == 0) {
             for (i = 0; i < input.length; i++) {
                 if (input[i][prop] >= rangeObj.min) results.push(input[i]);
             }

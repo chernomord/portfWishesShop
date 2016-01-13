@@ -9,9 +9,9 @@
 //}
 
 //
-function unique(z, prop){
+function unique(input, prop){
     // first - clone the input to stay on the safe side
-    var c = z.slice(0);
+    var c = input.slice(0);
     c.sort(function (a,b){
         //if a numbers in input
         //if (a[prop] > b[prop]) return 1;

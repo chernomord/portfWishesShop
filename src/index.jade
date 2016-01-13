@@ -11,7 +11,7 @@ html
     body(ng-app="funshopApp")
         menu-root
         main-banner
-        section(ng-controller='GoodiesListController')
+        section(ng-controller='ProductsLstCtrl as prods')
             nav.navbar.navbar-default.categories__nav
                 .container
                     .navbar-header
@@ -26,7 +26,7 @@ html
                             li
                                 a(href="#")
                                     | Все
-                            li(ng-repeat='category in categories')
+                            li(ng-repeat='category in prods.categories')
                                 //.active
                                 a(href='#' ng-click='')
                                     | {{category.name}}
@@ -40,34 +40,39 @@ html
                     .col-md-3
                         h3 Фильтр
                         h5 Бренд
-                        select.form-control.input-sm(data-ng-model="search.brand")
+                        select.form-control.input-sm(data-ng-model="prods.search.brand")
                             option(label="Все бренды" value="") Все бренды
-                            option(ng-repeat="goodie in goodies | myUnique:'brand'" value="{{goodie.brand}}") {{goodie.brand}}
+                            option(ng-repeat="goodie in prods.goodies | myUnique:'brand'" value="{{goodie.brand}}") {{goodie.brand}}
                         h5 Название
-                        input.form-control.input-sm(type='text', placeholder='Название', ng-model="search.name")
-                        //h5 Теги
+                        input.form-control.input-sm(type='text', placeholder='Название', ng-model="prods.search.name" )
                         h5 Цена
                         form.form-inline
                             .input-group.col-md-5
                                 .input-group-addon от
-                                input.form-control.input-sm(type="number" ng-model="search.price.min")
+                                input.form-control.input-sm(type="number" ng-model="prods.search.price.min")
                             .input-group.col-md-6
                                 .input-group-addon до
-                                input.form-control.input-sm(type="number" ng-model="search.price.max")
+                                input.form-control.input-sm(type="number" ng-model="prods.search.price.max" data-ng-change="prods.updateProds()")
                         h5 Теги
-                        tags-input(ng-model="search.tags")
-                            auto-complete(source="loadTags($query)")
+                        tags-input(
+                            ng-model="prods.search.tags"
+                            onTagAdded="prods.updateProds()"
+                            placeholder="Введите теги"
+                            addFromAutocompleteOnly="true"
+                            )
+                            auto-complete(source="prods.loadTags($query)" min-length="1")
                         p.text-right
-                            a.btn.btn-link.btn-sm(href="#" data-ng-click="resetFilter()") Сборсить фильтр
+                            a.btn.btn-link.btn-sm(href="#" data-ng-click="prods.resetFilter()") Сборсить фильтр
                     .col-md-9
                         .row
-                            .col-sm-6.col-md-4(ng-repeat='goodie in filteredGoodies')
+                            .col-sm-6.col-md-4(ng-repeat='goodie in prods.filteredGoodies')
                                 product-card(product="goodie")
                         .row.text-center
                             uib-pagination(
-                                ng-model="paginator.currentPage"
-                                total-items="paginator.totalItems"
-                                max-size="paginator.maxSize"
+                                ng-model="prods.paginator.currentPage"
+                                data-ng-change="prods.updateProds()"
+                                total-items="prods.paginator.totalItems"
+                                max-size="prods.paginator.maxSize"
                                 boundary-links="true"
                             )
 

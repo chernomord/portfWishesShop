@@ -1,23 +1,20 @@
 menuRootModule.directive('menuRoot', function()
 {
-
-    var controller = ['$scope', '$translate', '$translatePartialLoader', function($scope, $translate, $translatePartialLoader)
+    var rootMenuCtrl = ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader)
     {
         $translatePartialLoader.addPart('MenuRoot');
-
         // Language switch element
-        $scope.changeLanguage = function (langKey) {
+        this.changeLanguage = function (langKey) {
             $translate.use(langKey);
         };
-
-
     }];
 
     return {
         restrict: 'E',
         scope: {},
-        controller: controller,
+        controller: rootMenuCtrl,
+        controllerAs: 'menu',
+        bindToController: true,
         templateUrl: '_templates/_menuRoot.html'
     }
-
 });
