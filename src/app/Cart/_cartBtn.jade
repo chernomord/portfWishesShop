@@ -1,0 +1,4 @@
+button(type='button' ui-sref="cart" data-ng-disabled="vm.isDisabled()").btn.btn-primary.navbar-btn
+    span.glyphicon.glyphicon-shopping-cart
+    | &nbsp; Корзинка
+    .badge(data-ng-bind="vm.productsCount")

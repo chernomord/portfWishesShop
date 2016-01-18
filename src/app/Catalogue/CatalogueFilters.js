@@ -52,6 +52,8 @@ catalogueModule.filter('byTags', function() {
 catalogueModule.filter('myUnique', function() {
     return function(input, prop) {
 
+        if (!input || !prop) {return false}
+
         var filtered = unique(input, prop);
 
         var results = [];

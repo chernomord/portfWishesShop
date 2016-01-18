@@ -1,0 +1,14 @@
+section
+    .container
+        h1 Оформление заказа
+        p Пожалуйста, нажмите кнопку подтверждения заказа и он будет немедленно отправлен в службу исполнения желаний. Будем считать что мы знаем ваш адрес и все такое. Ведь это ваши желания ;)
+        h3 Ваш заказ
+        ul
+            li(ng-repeat="item in vm.cartList")
+                | {{ item.name }} &ndash;&nbsp;
+                b {{ item.qty }} шт.
+        h3
+            | На сумму:&nbsp;
+            span(ng-bind="vm.totalCount | currency")
+        p
+            a(href="#" ui-sref="checkOut.confirm").btn.btn-primary.btn-lg Исполнить все желания

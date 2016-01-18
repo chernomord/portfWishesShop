@@ -1,6 +1,8 @@
-var bannerModule = angular.module('banner', []);
-var catalogueModule = angular.module('catalogueModule', []);
-var menuRootModule = angular.module('menuRootModule', []);
+var bannerModule        = angular.module('banner', []),
+    catalogueModule     = angular.module('catalogueModule', []),
+    menuRootModule      = angular.module('menuRootModule', []),
+    cartModule          = angular.module('cartModule', []),
+    checkOutModule      = angular.module('checkOutModule', []);
 
 var funshopApp = angular.module('funshopApp', [
     'ngCookies',
@@ -11,6 +13,8 @@ var funshopApp = angular.module('funshopApp', [
     'ngTagsInput',
     'catalogueModule',
     'banner',
-    'menuRootModule'
+    'menuRootModule',
+    'cartModule',
+    'checkOutModule'
 ]);
 

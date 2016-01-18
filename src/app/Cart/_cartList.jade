@@ -12,27 +12,28 @@ section
                     th.cell__counter Количество
                     th
             tbody
-                tr
+                tr(ng-repeat="item in vm.cartList")
                     td
                         img.img-responsive(src="goods/hugs.gif", style='width: 100px; display: block;')
                     td
-                        a(href='#') Обнимашки
-                        p А тут сокращенное описание позиции
+                        a(href='#') {{item.name}}
+                        p {{item.description}}
                     td
-                        | 12
+                        | {{item.price}}
                     td
                         .input-group.basket__counter
                             span.input-group-btn
-                                button.btn.btn-default
+                                button.btn.btn-default(ng-click="vm.minusItem(item.uid)")
                                     span.plyphicon.glyphicon-minus
-                            input.form-control.input-number(value="1")
+                            input.form-control.input-number(ng-model="item.qty" data-ng-change="vm.updateCartModel()")
                             span.input-group-btn
-                                button.btn.btn-default
+                                button.btn.btn-default(ng-click="vm.plusItem(item.uid)")
                                     span.plyphicon.glyphicon-plus
                     td
-                        button.btn.btn-default Удалить
+                        button.btn.btn-default(ng-click="vm.removeItemType(item.uid)") Удалить
         .row
             .col-md-6.col-md-offset-6.text-right
                 h3 Всего:
-                    span 456
-                button.btn.btn-primary Оформить заказ
+                    span {{ vm.totalCount | currency }}
+                button.btn.btn-default(ng-click="vm.emptyCart()") Очистить корзину
+                button.btn.btn-primary(ui-sref="checkOut") Оформить заказ

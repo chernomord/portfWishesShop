@@ -1,11 +1,14 @@
-var ProductsLstCtrl = function($scope, $filter) {
+var ProductsLstCtrl = function($scope, $filter, productsLoader, $location) {
 
     var vm = this;
 
+    vm.catID = $location.search()['category'];
+    console.log(vm.catID);
     this.$filter = $filter;
     this.$scope = $scope;
+    this.productsLoader = productsLoader;
 
-    this._searchValues = {
+    var searchValues = {
         setDefaults: function () {
             this.name = '';
             this.brand = '';
@@ -16,49 +19,39 @@ var ProductsLstCtrl = function($scope, $filter) {
             this.tags = null;
         }
     };
-    this._searchValues.setDefaults();
+    searchValues.setDefaults();
 
-    this.objPropsFor = function(prop) {
-        return {
-            get: function () {
-                return this._searchValues[prop];
-            }.bind(this),
-            set: function (newValue) {
-                this._searchValues[prop] = newValue;
-                this.updateProds();
-            }.bind(this),
-            enumerable: true,
-            configurable: true
-        }
-    };
-    this.search = Object.create(this._searchValues, {
-        "name":     this.objPropsFor('name'),
-        "brand":    this.objPropsFor('brand')
+    productsLoader.getJSONProducts(['abstract.json', 'material.json']).then(function(results) {
+        vm.goodies = results;
+        vm.search = Object.create(searchValues);
+        vm.categories = productsLoader.getCategories();
+        vm.paginator = {
+            currentPage: 1,
+            maxSize: 8,
+            numPerPage: 9,
+            totalItems: vm.goodies.length
+        };
+
+        vm.updateProds();
+
+        $scope.$watch(
+            function watchAll() {
+                return [vm.search.tags, vm.search.price.min, vm.search.price.max, vm.search.name, vm.search.brand];
+            },
+            function() {
+                if (vm.search.price.min < 0) vm.search.price.min = 0;
+                if (vm.search.price.max < 0) vm.search.price.max = 0;
+                vm.updateProds();
+            }, true);
     });
-    this.goodies = storage;
-    this.categories = categories;
-    this.paginator = {
-        currentPage: 1,
-        maxSize: 8,
-        numPerPage: 9,
-        totalItems: storage.length
-    };
-
-    this.updateProds();
-
-    $scope.$watch(
-    function watchAll() {
-        return [vm.search.tags, vm.search.price.min, vm.search.price.max];
-    },
-    vm.updateProds(), true);
 };
 
 // Loads and aggregate full list of tags for tags auto-complete widget
 ProductsLstCtrl.prototype.loadTags = function(query) {
     var allTagsList = [],
         filteredTags = [];
-    for (var i = 0; i<storage.length; i++) {
-        allTagsList.push.apply(allTagsList, storage[i].tags);
+    for (var i = 0; i<this.goodies.length; i++) {
+        allTagsList.push.apply(allTagsList, this.goodies[i].tags);
     }
     allTagsList = unique(allTagsList, 'text');
     for (i = 0; i < allTagsList.length; i++) {
@@ -67,12 +60,17 @@ ProductsLstCtrl.prototype.loadTags = function(query) {
     return filteredTags;
 };
 
-// Reset filter on click
+/*
+* Reset filter on click
+*/
 ProductsLstCtrl.prototype.resetFilter = function() {
     this.search.setDefaults();
 };
 
-// Updating filter from inside of the controller
+/*
+* Updating filter from inside of the controller
+* TODO: Move the function into separate service for the sake of sleek controller code
+*/
 ProductsLstCtrl.prototype.updateFilter = function(products, search, pgn) {
     var results;
     results = this.$filter('filter')(products, {name: search.name, brand: search.brand});
@@ -87,9 +85,9 @@ ProductsLstCtrl.prototype.updateFilter = function(products, search, pgn) {
 
 // update filtered products on model change
 ProductsLstCtrl.prototype.updateProds = function() {
-    this.filteredGoodies = this.updateFilter(storage, this.search, this.paginator);
+    this.filteredGoodies = this.updateFilter(this.goodies, this.search, this.paginator);
 };
 
-ProductsLstCtrl.$inject = ['$scope', '$filter'];
+ProductsLstCtrl.$inject = ['$scope', '$filter', 'productsLoader', '$location'];
 
 catalogueModule.controller('ProductsLstCtrl', ProductsLstCtrl);

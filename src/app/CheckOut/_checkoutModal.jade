@@ -1,0 +1,9 @@
+.modal-header.text-center
+    h3.modal-title К исполнению
+.modal-body.text-center
+    | Итак, вы все еще уверены что хотите исполнить все ваши желания?
+.modal-footer(style="text-align:center;")
+    p
+        button.btn.btn-success.btn-lg(type='button', ng-click='vm.ok()') Давайте!
+    p
+        button.btn.btn-default(type='button', ng-click='vm.cancel()') Ой нет, верните назад!

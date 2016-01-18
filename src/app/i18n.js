@@ -1,6 +1,4 @@
-funshopApp.config([
-    '$translateProvider',
-    '$translatePartialLoaderProvider',
+funshopApp.config(['$translateProvider','$translatePartialLoaderProvider',
     function ($translateProvider, $translatePartialLoaderProvider) {
         $translateProvider
             //.uniformLanguageTag('bcp47')
@@ -17,10 +15,13 @@ funshopApp.config([
             .useLoaderCache(true)
             .useSanitizeValueStrategy('escape');
         $translatePartialLoaderProvider.addPart('Banner', 'MenuRoot', 'Catalogue');
-    }]);
+    }
+]);
 
-funshopApp.run(['$rootScope', '$translate', function ($rootScope, $translate) {
-    $rootScope.$on('$translatePartialLoaderStructureChanged', function () {
-        $translate.refresh();
-    });
-}]);
+funshopApp.run(['$rootScope', '$translate',
+    function ($rootScope, $translate) {
+        $rootScope.$on('$translatePartialLoaderStructureChanged', function () {
+            $translate.refresh();
+        });
+    }
+]);
