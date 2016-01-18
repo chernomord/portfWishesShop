@@ -33,6 +33,17 @@ catalogueModule.directive('catMenu', ['$timeout', '$location', function($timeout
 
     var linkFn = function(scope, element, attrs) {
 
+        element.find('ul').on('click', function (event)  {
+            var elem = angular.element(event.target);
+            var cat_id = elem.attr('data-cat-id');
+            scope.$apply(function(){
+                $location.search('category',cat_id);
+            });
+            elem.parent().parent().children().removeClass('active');
+            elem.parent().addClass('active');
+
+        });
+
         scope.$watch('vm.categories', function(newValue,oldValue){
             if (newValue){
 
@@ -59,15 +70,15 @@ catalogueModule.directive('catMenu', ['$timeout', '$location', function($timeout
                     }
                 });
 
-                link.on('click', function(event){
-                    var elem = angular.element(this);
-                    var cat_id = elem.attr('data-cat-id');
-                    scope.$apply(function(){
-                        $location.search('category',cat_id);
-                    });
-                    elem.parent().parent().children().removeClass('active');
-                    elem.parent().addClass('active');
-                });
+                //link.on('click', function(event){
+                //    var elem = angular.element(this);
+                //    var cat_id = elem.attr('data-cat-id');
+                //    scope.$apply(function(){
+                //        $location.search('category',cat_id);
+                //    });
+                //    elem.parent().parent().children().removeClass('active');
+                //    elem.parent().addClass('active');
+                //});
             }
         });
     };

@@ -26,7 +26,7 @@ catalogueModule.directive('catContent', function()
                 productsLoader.getJSONProducts(vm.requests).then(function(results) {
                     vm.goodies = results;
                     vm.search = Object.create(searchValues);
-                    vm.categories = productsLoader.getCategories();
+                    //vm.categories = vm.categories;
                     vm.paginator = {
                         currentPage: 1,
                         maxSize: 8,
@@ -96,7 +96,8 @@ catalogueModule.directive('catContent', function()
     return {
         restrict: 'E',
         scope: {
-            requests: '=requests'
+            requests: '=requests',
+            categories: '=categories'
         },
         require: '^catMenu',
         controller: catContent,

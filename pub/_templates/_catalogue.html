@@ -1,0 +1,65 @@
+
+<!--section-->
+<!--    nav.navbar.navbar-default.categories__nav-->
+<!--        .container-->
+<!--            .navbar-header-->
+<!--                button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false")-->
+<!--                    span.sr-only Toggle navigation-->
+<!--                    span.icon-bar-->
+<!--                    span.icon-bar-->
+<!--                    span.icon-bar-->
+<!--                a.navbar-brand(href="#") Моё!-->
+<!--            #bs-example-navbar-collapse-1.collapse.navbar-collapse-->
+<!--                ul.nav.navbar-nav-->
+<!--                    li-->
+<!--                        a(ui-sref="catalogue")-->
+<!--                            | Все-->
+<!--                    li(ng-repeat='category in prods.categories')-->
+<!--                        //.active-->
+<!--                        a(ng-click="vm.categorySet(category.http_request)")-->
+<!--                            | {{category.name}}-->
+<!--                            //span.sr-only (current)-->
+<!--                ul.nav.navbar-nav.navbar-right-->
+<!--                    li-->
+<!--                        cart-btn-->
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <h3>{{ vm.catID }}</h3>
+      <h3>Фильтр</h3>
+      <h5>Бренд</h5>
+      <select data-ng-model="vm.search.brand" class="form-control input-sm">
+        <option label="Все бренды" value="">Все бренды</option>
+        <option ng-repeat="goodie in vm.goodies | myUnique:'brand'" value="{{goodie.brand}}">{{goodie.brand}}</option>
+      </select>
+      <h5>Название</h5>
+      <input type="text" placeholder="Название" ng-model="vm.search.name" class="form-control input-sm"/>
+      <h5>Цена</h5>
+      <form class="form-inline">
+        <div class="input-group col-md-5">
+          <div class="input-group-addon">от</div>
+          <input type="number" ng-model="vm.search.price.min" class="form-control input-sm"/>
+        </div>
+        <div class="input-group col-md-6">
+          <div class="input-group-addon">до</div>
+          <input type="number" ng-model="vm.search.price.max" data-ng-change="vm.updateProds()" class="form-control input-sm"/>
+        </div>
+      </form>
+      <h5>Теги</h5>
+      <tags-input ng-model="vm.search.tags" onTagAdded="vm.updateProds()" placeholder="Введите теги" addFromAutocompleteOnly="true">
+        <auto-complete source="vm.loadTags($query)" min-length="1"></auto-complete>
+      </tags-input>
+      <p class="text-right"><a href="#" data-ng-click="vm.resetFilter()" class="btn btn-link btn-sm">Сборсить фильтр</a></p>
+    </div>
+    <div class="col-md-9">
+      <div class="row">
+        <div ng-repeat="goodie in vm.filteredGoodies" class="col-sm-6 col-md-4">
+          <product-card product="goodie"></product-card>
+        </div>
+      </div>
+      <div class="row text-center">
+        <uib-pagination ng-model="vm.paginator.currentPage" data-ng-change="vm.updateProds()" total-items="vm.paginator.totalItems" max-size="vm.paginator.maxSize" boundary-links="true"></uib-pagination>
+      </div>
+    </div>
+  </div>
+</div>

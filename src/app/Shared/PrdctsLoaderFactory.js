@@ -1,23 +1,23 @@
 funshopApp.factory('productsLoader', ['$http', '$q', function($http, $q){
     var local_storage = [];
     var local_categories = [];
-    local_categories = categories;
+    //local_categories = categories;
     return {
-        getProducts: function(requests_array) {
-            var items = [];
-            var request;
-            for (var i=0; i<requests_array.length; i++) {
-                request = requests_array[i];
-                items = window[request];
-                for (var n=0; n< items.length; n++) {
-                    local_storage.push(items[n]);
-                }
-            }
-            return local_storage;
-        },
-        getCategories: function() {
-            return local_categories;
-        },
+        //getProducts: function(requests_array) {
+        //    var items = [];
+        //    var request;
+        //    for (var i=0; i<requests_array.length; i++) {
+        //        request = requests_array[i];
+        //        items = window[request];
+        //        for (var n=0; n< items.length; n++) {
+        //            local_storage.push(items[n]);
+        //        }
+        //    }
+        //    return local_storage;
+        //},
+        //getCategories: function() {
+        //    return local_categories;
+        //},
         getJSONProducts: function(requests_array) {
             var items = [];
             var requests = [];
