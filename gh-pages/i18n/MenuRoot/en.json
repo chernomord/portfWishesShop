@@ -1,0 +1,9 @@
+{
+  "ROOT_MENU_LOGIN":      "Login",
+  "ROOT_MENU_ABOUT":      "About",
+  "ROOT_MENU_CATALOGUE":  "Catalogue",
+
+  "ROOT_MENU_LANG":       "Язык (en)",
+  "ROOT_MENU_LANG_RU":    "Русский",
+  "ROOT_MENU_LANG_EN":    "English"
+}

@@ -1,0 +1,56 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-9 animate-hide-simple">
+      <div ng-hide="!vm.loadFinished">
+        <div class="row catalogue__container">
+          <div ng-repeat="item in vm.filteredGoodies" class="col-xs-6 col-md-4 col-sm-4 catalogue-list">
+            <product-card product="item"></product-card>
+          </div>
+        </div>
+        <div class="row text-center">
+          <uib-pagination ng-model="vm.paginator.currentPage" data-ng-change="vm.updateProds()" total-items="vm.paginator.totalItems" max-size="vm.paginator.maxSize" boundary-links="true" ng-hide="vm.paginator.totalItems &lt;= vm.paginator.maxSize"></uib-pagination>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 hidden-xs hidden-sm">
+      <div data-sticky-elm="{&quot;offset&quot;:&quot;100&quot;, &quot;center&quot;:&quot;false&quot;}" class="filter">
+        <h3>Sort by</h3>
+        <p>
+          <div class="btn-group">
+            <label ng-click="vm.setOrder('alph')" ng-model="alphReverse" uib-btn-radio="false" uncheckable="uncheckable" class="btn btn-primary btn-sm">A-Z</label>
+            <label ng-click="vm.setOrder('alph')" ng-model="alphReverse" uib-btn-radio="true" uncheckable="uncheckable" class="btn btn-primary btn-sm">Z-A</label>
+          </div>
+          <div class="btn-group">
+            <label ng-click="vm.setOrder('price')" ng-model="priceReverse" uib-btn-radio="false" uncheckable="uncheckable" class="btn btn-success btn-sm">$<span class="glyphicon glyphicon-arrow-down"></span></label>
+            <label ng-click="vm.setOrder('price')" ng-model="priceReverse" uib-btn-radio="true" uncheckable="uncheckable" class="btn btn-success btn-sm">$<span class="glyphicon glyphicon-arrow-up"></span></label>
+          </div>
+        </p>
+        <h3>Filter</h3>
+        <h5>Brand</h5>
+        <select data-ng-model="vm.search.brand" class="form-control input-sm">
+          <option label="Все бренды" value="">All brands</option>
+          <option ng-repeat="goodie in vm.goodies | myUnique:'brand'" value="{{goodie.brand}}">{{goodie.brand}}</option>
+        </select>
+        <h5>Name</h5>
+        <input type="text" placeholder="Название" ng-model="vm.search.name" class="form-control input-sm"/>
+        <h5>Price</h5>
+        <form class="form-inline">
+          <div class="input-group filter__col-48">
+            <div class="input-group-addon">min</div>
+            <input type="number" ng-model="vm.search.price.min" class="form-control input-sm"/>
+          </div>
+          <div class="input-group filter__col-48">
+            <div class="input-group-addon">max</div>
+            <input type="number" ng-model="vm.search.price.max" data-ng-change="vm.updateProds()" class="form-control input-sm"/>
+          </div>
+        </form>
+        <h5>tags</h5>
+        <tags-input ng-model="vm.search.tags" onTagAdded="vm.updateProds()" placeholder="Введите теги" addFromAutocompleteOnly="true">
+          <auto-complete source="vm.loadTags($query)" min-length="1"></auto-complete>
+        </tags-input>
+        <p class="text-right"><a href="" data-ng-click="vm.resetFilter()" class="btn btn-link btn-sm">Reset filter</a></p>
+      </div>
+    </div>
+  </div>
+</div>
