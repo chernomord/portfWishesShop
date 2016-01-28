@@ -59,13 +59,13 @@ funshopApp.config(['$stateProvider', '$urlRouterProvider',
             })
             .state('item', {
                 url: "/catalogue/item?category&item",
-                templateUrl: "templates/_itemPage.html",
+                templateUrl: "templates/itemPage.html",
                 controller: 'itemPageCtrl'
             })
 
             .state('about', {
                 url: "/about",
-                templateUrl: "templates/_about.html"
+                templateUrl: "templates/about.html"
             })
             .state('cart', {
                 url: "/cart",
@@ -79,7 +79,7 @@ funshopApp.config(['$stateProvider', '$urlRouterProvider',
                 url: "/confirm",
                 onEnter: ['$stateParams', '$state', '$uibModal', 'cartContainer', function ($stateParams, $state, $uibModal, cartContainer) {
                     $uibModal.open({
-                        templateUrl: "templates/_checkoutModal.html",
+                        templateUrl: "templates/checkoutModal.html",
                         controller: 'checkoutConfirmModalCtrl',
                         controllerAs: 'vm',
                         size: 'sm',
@@ -103,7 +103,7 @@ bannerModule.directive('mainBanner', ['$timeout', '$q', function($timeout, $q)
     return {
         restrict: 'E',
         scope: {},
-        templateUrl: 'templates/_banner.html',
+        templateUrl: 'templates/banner.html',
         link: function(scope, element, attr, ctrl) {
 
             // cycle through background images
@@ -165,7 +165,7 @@ cartModule.directive('cartBtn', ['$timeout', function($timeout)
         controller: cartBtnCtrl,
         controllerAs: 'vm',
         bindToController: true,
-        templateUrl: 'templates/_cartBtn.html',
+        templateUrl: 'templates/cartBtn.html',
         link: function(scope, element, attr, ctrl) {
             var btnEl = element.find('button'),
                 badge = angular.element(element[0].querySelector('.badge')),
@@ -240,7 +240,7 @@ cartModule.directive('cartList', function() {
         controller: 'cartListCtrl',
         controllerAs: 'vm',
         bindToController: true,
-        templateUrl: 'templates/_cartList.html'
+        templateUrl: 'templates/cartList.html'
     }
 });
 
@@ -469,7 +469,7 @@ catalogueModule.directive('catContent', function()
         controller: catContent,
         controllerAs: 'vm',
         bindToController: true,
-        templateUrl: 'templates/_catContent.html'
+        templateUrl: 'templates/catContent.html'
     }
 });
 catalogueModule.directive('catMenu', ['$window', function($window) {
@@ -506,7 +506,7 @@ catalogueModule.directive('catMenu', ['$window', function($window) {
         restrict: 'E',
         scope: {},
         controller: catMenuCtrl,
-        templateUrl: 'templates/_catMenu.html'
+        templateUrl: 'templates/catMenu.html'
     }
 }]);
 catalogueModule.directive('productCard', function()
@@ -538,7 +538,7 @@ catalogueModule.directive('productCard', function()
         controllerAs: 'vm',
         bindToController: true,
 
-        templateUrl: 'templates/_productCard.html'
+        templateUrl: 'templates/productCard.html'
     }
 });
 checkOutModule.directive('checkOut', function() {
@@ -548,7 +548,7 @@ checkOutModule.directive('checkOut', function() {
         controller: 'checkOutCtrl',
         controllerAs: 'vm',
         bindToController: true,
-        templateUrl: 'templates/_checkOut.html'
+        templateUrl: 'templates/checkOut.html'
     }
 });
 
@@ -646,7 +646,7 @@ menuRootModule.directive('menuRoot', function()
         controller: rootMenuCtrl,
         controllerAs: 'menu',
         bindToController: true,
-        templateUrl: 'templates/_menuRoot.html'
+        templateUrl: 'templates/menuRoot.html'
     }
 });
 funshopApp.factory('cartContainer', ['$cookies', function($cookies){
