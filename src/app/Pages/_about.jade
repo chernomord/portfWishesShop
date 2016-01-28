@@ -3,29 +3,31 @@
 
 section
     .container
-        .page-header
-            h1 Что это и зачем
-            p Проект создан для практики и демонстрации навыков владения Angular, JS и Bootstrap, и прикола ради.
-            h3 Этапы реализации
-            ol
-                li
-                    span.label.label-success Сделано
-                    | Интерфейс на Angular на основе статичных данных
-
-                    ul
-                        li Каталог товаров
-                        li Фильтр каталога по нескольким параметрам
-                        li Интернационализация
-                        li Корзина
-                        li Оформление заказа
-                li
-                    span.label.label-default Ожидается
-                    | Управление контентом с помощью админки на Django
-
-                    ul
-                        li Авторизация
-                        li Авторизация через API Facebook и Google
-                        li Группы пользователей
-                        li Личный кабинет
-                        li Управление контентом через Ajax интерфейс
-                        li Отправка "чека" заказа по почте
+        h1 About the project
+        p This project created as a learning and experimental playground. The main field I want to hone my skills with it are AngularJS, authorisation mechanics and user models.
+        h2 Functionality
+        h3
+            span.label.label-success Current
+        ul
+            li Items catalogue
+            li Catalogue filters
+            li i18n (internationalization)
+            li Cart
+            li Checkout
+        h3
+            span.label.label-default Roadmap
+        ul
+            li Unit tests
+            li Integrate Firebase
+            li Login and authentication
+            li User groups policies
+            li Admin user group, members able to edit content
+            li Integrate Filestack as a files CDN
+            li Soft transitional animation
+            li Images preloader
+            li Pages preloader
+        h3
+            span.label.label-default Future goals
+        ul
+            li Migrate to own back-end
+            li Upgrade to Angular 2.0

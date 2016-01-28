@@ -1,13 +1,17 @@
 //- catalogue goodie card template
 .thumbnail
-    img.img-responsive(ng-src="{{vm.product.image}}", style='width: 100%; display: block;')
+    a(ui-sref="item({ category: vm.product.categoryID, item: vm.product.uid })", role='button')
+        image-load-indicator(img-src="vm.product.image" width="100")
+        //.img-loading-container
+        //    img.img-responsive(ng-src="{{vm.product.image}}", style='width: 100%; display: block;' image-load-indicator sorc="vm.product.image")
     .caption
         h3(ng-bind="vm.product.name")
-        p(ng-bind="vm.product.description")
-        h4(ng-bind="vm.product.price | currency:'р. '")
-        p
+        p(ng-bind="(vm.product.description | limitTo : 40 : begin) + '…'")
+        h4(ng-bind="vm.product.price | currency")
+        p.text-left
             a.btn.btn-primary(href='', role='button', ng-click="vm.addItem(vm.product)")
-                | В миску
+                | +
+                span.glyphicon.glyphicon-shopping-cart
             | &nbsp;
-            a.btn.btn-default(href='#', role='button')
-                | Подробнее
+            a.btn.btn-default(ui-sref="item({ category: vm.product.categoryID, item: vm.product.uid })", role='button')
+                | Details

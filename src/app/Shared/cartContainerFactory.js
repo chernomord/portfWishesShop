@@ -37,7 +37,8 @@ funshopApp.factory('cartContainer', ['$cookies', function($cookies){
                 }
             }
             if (!found) {
-                newItem.qty = 1;
+                if (!newItem.qty) { newItem.qty = 1; }
+                newItem.description = newItem.description.slice(0,51);
                 this.items.push(newItem);
             }
         },
@@ -47,7 +48,7 @@ funshopApp.factory('cartContainer', ['$cookies', function($cookies){
                     var qty = this.items[i].qty;
                     this.items[i].qty = qty - 1;
                     if (this.items[i].qty < 1 ) {
-                        this.items.splice(i,1)
+                        this.items[i].qty = 1;
                     }
                 }
             }

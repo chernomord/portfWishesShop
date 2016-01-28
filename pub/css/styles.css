@@ -10,12 +10,88 @@ tags-input .autocomplete,tags-input .tags{border-radius:4px}tags-input{box-shado
   background-color: #fff;
   border-top: 0;
 }
+body {
+  position: relative;
+  min-height: 100vh;
+}
+footer {
+  background-color: #11121a;
+  padding: 30px 0 10px 0;
+  color: #5c6580;
+  position: absolute;
+  right: 0;
+  bottom: -150px;
+  left: 0;
+}
 .jumbotron {
   margin-bottom: 0;
+  background-color: #11171f;
+  background-image: url("../img/bg01.jpg");
+  background-position: 50% 95%;
+  background-size: cover;
+  color: rgba(255,255,255,0.7);
+  transition: background-image 10s ease-in-out;
+}
+.filter {
+  width: 210px;
+}
+.filter__col-48 {
+  width: 49%;
+}
+.breadcrumb {
+  margin-top: 30px;
+}
+.root__nav {
+  background-color: #0c0d1a;
 }
 .root__nav li > a {
   padding-top: 5px;
   padding-bottom: 5px;
+}
+.root__nav li > a:hover {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid transparent;
+}
+.root__nav li > a:focus {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid transparent;
+}
+.root__nav .open>a,
+.root__nav .nav .open>a:focus,
+.root__nav .nav .open>a:hover {
+  background-color: transparent;
+  border-color: #337ab7;
+}
+.root__nav .dropdown-menu {
+  background-color: #0c0d1a;
+}
+.root__nav .dropdown-menu li > a {
+  color: #337ab7;
+}
+.root__nav .dropdown-menu li > a:hover {
+  background-color: transparent;
+  color: #fff;
+  border: 0;
+}
+.root__nav .dropdown-menu li > a:focus {
+  background-color: transparent;
+  color: #fff;
+  border: 0;
+}
+.root__nav li.active {
+  background-color: rgba(255,255,255,0.1);
+}
+.modal-sm .modal-content {
+  top: 150px;
+}
+.root__nav-brand {
+  float: left;
+  height: 30px;
+  padding: 10px 10px;
+  font-size: 18px;
+  line-height: 20px;
 }
 .basket td {
   vertical-align: middle !important;
@@ -27,6 +103,189 @@ tags-input .autocomplete,tags-input .tags{border-radius:4px}tags-input{box-shado
   width: 45px !important;
   text-align: center;
 }
+.cart__btn {
+  transition: 0.1s linear all;
+}
+.contain__confirmation__container {
+  -webkit-perspective: 200px;
+          perspective: 200px;
+  position: absolute;
+  left: -16px;
+  top: calc(50% - 22px);
+}
+.contain__confirmation__container.cart--empty {
+  top: calc(50% - 10px);
+  left: calc(50% - 28px);
+}
+.contain__confirmation__container.cart--empty .cart__confirmation {
+  padding: 20px;
+}
+.cart__confirmation {
+  white-space: nowrap;
+  padding: 5px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 2px 4px 25px 0 rgba(0,0,0,0.37);
+  transition: all 0.5s cubic-bezier(0.46, -0.6, 0.58, 2.5);
+  opacity: 1;
+}
+.cart__confirmation.ng-hide {
+  -webkit-transform: rotate3d(100, 0, 0, 90deg);
+          transform: rotate3d(100, 0, 0, 90deg);
+  opacity: 0;
+}
 .nav .pagination .carousel .panel-title a {
   cursor: pointer;
+}
+.animate-hide-simple {
+  opacity: 1;
+  transition: 0.1s linear all;
+}
+.animate-hide-simple.ng-hide {
+  opacity: 0;
+}
+.catalogue-list {
+  opacity: 1;
+}
+.catalogue-list.ng-enter,
+.catalogue-list.ng-move {
+  transition: 0.1s linear all;
+}
+.catalogue-list.ng-enter,
+.catalogue-list.ng-move {
+  opacity: 0;
+}
+.catalogue-list.ng-move.ng-move-active {
+  opacity: 1;
+}
+.catalogue-list.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+.catalogue-list.ng-leave {
+  opacity: 1;
+}
+.catalogue-list.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+.cart-list td {
+  position: relative;
+}
+.cart-list.ng-leave.ng-leave-active,
+.cart-list.ng-move,
+.cart-list.ng-enter {
+  opacity: 0;
+}
+.cart-list.ng-leave.ng-leave-active td,
+.cart-list.ng-move td,
+.cart-list.ng-enter td {
+  padding: -50px;
+}
+.cart-list.ng-leave,
+.cart-list.ng-move.ng-move-active,
+.cart-list.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+.cart-list.ng-leave td,
+.cart-list.ng-move.ng-move-active td,
+.cart-list.ng-enter.ng-enter-active td {
+  padding: auto;
+}
+.cart-list.ng-move,
+.cart-list.ng-enter,
+.cart-list.ng-leave {
+  transition: all linear 0.2s;
+}
+.cart-list.ng-move td,
+.cart-list.ng-enter td,
+.cart-list.ng-leave td {
+  transition: all linear 0.2s;
+}
+.img-loading-container {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+.img-loading-container:before {
+  content: "";
+  display: block;
+  padding-top: 100%; /* initial ratio of 1:1*/
+}
+.img-loading-container.loaded .content-container {
+  background-color: rgba(255,255,255,0);
+}
+.img-loading-container.loaded .content-container .spinner {
+  opacity: 0;
+  transition: all 0.1s linear;
+}
+.img-loading-container.loaded .content-container img {
+  opacity: 1;
+  transition: all 0.1s linear;
+}
+.width--100 {
+  width: 100%;
+}
+.content-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 5;
+  opacity: 1;
+  transition: all 0.1s linear;
+}
+.content-container img {
+  position: absolute;
+  top: 0;
+  opacity: 0;
+}
+.spinner {
+  width: 20%;
+  height: 20%;
+  background-color: #328fb3;
+  position: absolute;
+  top: calc(50% - 10%);
+  bottom: calc(50% - 10%);
+  left: calc(50% - 10%);
+  right: calc(50% - 10%);
+  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+          animation: sk-rotateplane 1.2s infinite ease-in-out;
+}
+[ng:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+  display: none !important;
+}
+@-webkit-keyframes sk-rotateplane {
+  0% {
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+            transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+            transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+  }
+  100% {
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+            transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
+}
+@keyframes sk-rotateplane {
+  0% {
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+            transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+            transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+  }
+  100% {
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+            transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
 }

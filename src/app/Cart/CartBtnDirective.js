@@ -1,4 +1,4 @@
-cartModule.directive('cartBtn', function()
+cartModule.directive('cartBtn', ['$timeout', function($timeout)
 {
     var cartBtnCtrl = ['$scope', '$translate', '$translatePartialLoader', 'cartContainer', function($scope, $translate, $translatePartialLoader, cartContainer)
     {
@@ -27,6 +27,38 @@ cartModule.directive('cartBtn', function()
         controller: cartBtnCtrl,
         controllerAs: 'vm',
         bindToController: true,
-        templateUrl: '_templates/_cartBtn.html'
+        templateUrl: '_templates/_cartBtn.html',
+        link: function(scope, element, attr, ctrl) {
+            var btnEl = element.find('button'),
+                badge = angular.element(element[0].querySelector('.badge')),
+                timer = null,
+                defColor = btnEl.css('background-color'),
+                plusColor = '#5CBA5F',
+                minusColor = '#F4A82B';
+
+            var modelChanged = function (newVal, oldVal) {
+
+                if(timer){
+                    $timeout.cancel(timer);
+                    timer = null;
+                }
+
+                if (newVal > oldVal) {
+                    btnEl.css({'background-color': plusColor, 'border-color': plusColor});
+                    badge.css({'color': plusColor});
+                } else {
+                    btnEl.css({'background-color': minusColor, 'border-color': minusColor});
+                    badge.css({'color': minusColor});
+                }
+
+                timer = $timeout(function() {
+                    btnEl.css({'background-color':defColor,'border-color':defColor});
+                    badge.css({'color': defColor});
+                }, 200);
+
+            };
+
+            scope.$watch(function(){ return scope.vm.productsCount; }, modelChanged);
+        }
     }
-});
+}]);

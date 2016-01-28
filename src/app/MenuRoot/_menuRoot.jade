@@ -1,14 +1,16 @@
-div.navbsr.navbar-static-top.root__nav
+nav.navbar-defaul.root__nav(data-sticky-elm='{"zIndex":"20","center":"true","offset":"0"}')
     .container
+        img.root__nav-brand(src="img/vw_logo.svg")
         ul.nav.navbar-nav
-            li
-                a.btn.btn-sm.disabled(href='#' translate="ROOT_MENU_LOGIN")
-            li
-                a.btn.btn-sm(href="#/" translate="ROOT_MENU_CATALOGUE")
-            li
+            li(ui-sref-active="active")
+                a.btn.btn-sm(ui-sref="catalogue" )
+                    | {{'ROOT_MENU_CATALOGUE' | translate}}
+                    span.sr-only (current)
+            li(ui-sref-active="active")
                 a.btn.btn-sm(ui-sref="about" translate="ROOT_MENU_ABOUT")
 
         ul.nav.navbar-nav.navbar-right
+            cart-btn
             li(uib-dropdown is-open="status.isopen")
                 a.btn.btn-sm(href='' id="language-dropdown" uib-dropdown-toggle)
                     | {{ 'ROOT_MENU_LANG' | translate }}

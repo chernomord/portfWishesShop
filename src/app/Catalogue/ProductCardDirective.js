@@ -8,9 +8,11 @@ catalogueModule.directive('productCard', function()
             var item4cart = {
                 uid: item.uid,
                 name: item.name,
+                image: item.image,
                 description: item.description,
                 qty: 1,
-                price: item.price
+                price: item.price,
+                categoryID: item.categoryID
             };
             cartContainer.addItem(item4cart);
         }

@@ -1,12 +1,12 @@
 
-<div class="navbsr navbar-static-top root__nav">
-  <div class="container">
+<nav data-sticky-elm="{&quot;zIndex&quot;:&quot;20&quot;,&quot;center&quot;:&quot;true&quot;,&quot;offset&quot;:&quot;0&quot;}" class="navbar-defaul root__nav">
+  <div class="container"><img src="img/vw_logo.svg" class="root__nav-brand"/>
     <ul class="nav navbar-nav">
-      <li><a href="#" translate="ROOT_MENU_LOGIN" class="btn btn-sm disabled"></a></li>
-      <li><a href="#/" translate="ROOT_MENU_CATALOGUE" class="btn btn-sm"></a></li>
-      <li><a ui-sref="about" translate="ROOT_MENU_ABOUT" class="btn btn-sm"></a></li>
+      <li ui-sref-active="active"><a ui-sref="catalogue" class="btn btn-sm">{{'ROOT_MENU_CATALOGUE' | translate}}<span class="sr-only">(current)</span></a></li>
+      <li ui-sref-active="active"><a ui-sref="about" translate="ROOT_MENU_ABOUT" class="btn btn-sm"></a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
+      <cart-btn></cart-btn>
       <li uib-dropdown="uib-dropdown" is-open="status.isopen"><a href="" id="language-dropdown" uib-dropdown-toggle="uib-dropdown-toggle" class="btn btn-sm">
           {{ 'ROOT_MENU_LANG' | translate }}
           &nbsp;<span class="caret"></span></a>
@@ -17,4 +17,4 @@
       </li>
     </ul>
   </div>
-</div>
+</nav>

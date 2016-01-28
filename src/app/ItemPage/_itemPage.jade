@@ -1,0 +1,38 @@
+section
+    .container
+        .row
+            ol.breadcrumb
+                li
+                    a(href="#/catalogue") Catalogue
+                li
+                    a(href="#/catalogue?category={{ item.categoryID }}") {{ item.categoryName }}
+                li.active {{ item.name }}
+    .container
+        .row
+            .col-md-4
+                .img-thumbnail.width--100
+                    image-load-indicator(img-src="item.image" width="100")
+                //-.img-thumbnail
+                //-    .img-loading-container
+                //-        img(ng-src="{{item.image}}" width="100%")
+            .col-md-8
+                h1 {{ item.name }}
+                    small &nbsp;by {{ item.brand }}
+                h4 Description
+                p {{ item.description }}
+                h4 Tags
+                ul.list-inline
+                    li(ng-repeat="tag in item.tags")
+                        span.label.label-primary {{ tag.text }}
+                h4 Price: {{ item.price | currency }}
+                p
+                    form(name="QtySelect").form-inline
+                        .form-group
+                            label(for="QtySelect") Qty:
+                            select.form-control.input-lg(data-ng-model="item.qty" id="QtySelect"
+                                ng-options="maxQty[n-1] for n in maxQty")
+                        .form-group
+                            a.btn.btn-primary.btn-lg(href='', role='button', ng-click="addItem(item)")
+                                span.glyphicon.glyphicon-shopping-cart
+                                | Add to cart
+

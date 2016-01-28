@@ -1,40 +1,55 @@
 .container
     .row
-        .col-md-3
-            h3 Фильтр
-            h5 Бренд
-            select.form-control.input-sm(data-ng-model="vm.search.brand")
-                option(label="Все бренды" value="") Все бренды
-                option(ng-repeat="goodie in vm.goodies | myUnique:'brand'" value="{{goodie.brand}}") {{goodie.brand}}
-            h5 Название
-            input.form-control.input-sm(type='text', placeholder='Название', ng-model="vm.search.name" )
-            h5 Цена
-            form.form-inline
-                .input-group.col-md-5
-                    .input-group-addon от
-                    input.form-control.input-sm(type="number" ng-model="vm.search.price.min")
-                .input-group.col-md-6
-                    .input-group-addon до
-                    input.form-control.input-sm(type="number" ng-model="vm.search.price.max" data-ng-change="vm.updateProds()")
-            h5 Теги
-            tags-input(
-            ng-model="vm.search.tags"
-            onTagAdded="vm.updateProds()"
-            placeholder="Введите теги"
-            addFromAutocompleteOnly="true"
-            )
-                auto-complete(source="vm.loadTags($query)" min-length="1")
-            p.text-right
-                a.btn.btn-link.btn-sm(href="#" data-ng-click="vm.resetFilter()") Сборсить фильтр
-        .col-md-9
-            .row
-                .col-sm-6.col-md-4(ng-repeat='item in vm.filteredGoodies')
-                    product-card(product="item")
-            .row.text-center
-                uib-pagination(
-                ng-model="vm.paginator.currentPage"
-                data-ng-change="vm.updateProds()"
-                total-items="vm.paginator.totalItems"
-                max-size="vm.paginator.maxSize"
-                boundary-links="true"
+        .col-md-9.animate-hide-simple
+            div(ng-hide="!vm.loadFinished")
+                .row.catalogue__container
+                    .col-xs-6.col-md-4.col-sm-4.catalogue-list(ng-repeat='item in vm.filteredGoodies')
+                        product-card(product="item")
+                .row.text-center
+                    uib-pagination(
+                    ng-model="vm.paginator.currentPage"
+                    data-ng-change="vm.updateProds()"
+                    total-items="vm.paginator.totalItems"
+                    max-size="vm.paginator.maxSize"
+                    boundary-links="true"
+                    ng-hide="vm.paginator.totalItems <= vm.paginator.maxSize"
+                    )
+        .col-md-3.hidden-xs.hidden-sm
+            .filter(data-sticky-elm='{"offset":"100", "center":"false"}')
+                h3 Sort by
+                p
+                    .btn-group
+                        label.btn.btn-primary.btn-sm(ng-click="vm.setOrder('alph')" ng-model="alphReverse" uib-btn-radio="false" uncheckable) A-Z
+                        label.btn.btn-primary.btn-sm(ng-click="vm.setOrder('alph')" ng-model="alphReverse" uib-btn-radio="true" uncheckable) Z-A
+                    .btn-group
+                        label.btn.btn-success.btn-sm(ng-click="vm.setOrder('price')" ng-model="priceReverse" uib-btn-radio="false" uncheckable)
+                            | $
+                            span.glyphicon.glyphicon-arrow-down
+                        label.btn.btn-success.btn-sm(ng-click="vm.setOrder('price')" ng-model="priceReverse" uib-btn-radio="true" uncheckable)
+                            | $
+                            span.glyphicon.glyphicon-arrow-up
+                h3 Filter
+                h5 Brand
+                select.form-control.input-sm(data-ng-model="vm.search.brand")
+                    option(label="Все бренды" value="") All brands
+                    option(ng-repeat="goodie in vm.goodies | myUnique:'brand'" value="{{goodie.brand}}") {{goodie.brand}}
+                h5 Name
+                input.form-control.input-sm(type='text', placeholder='Название', ng-model="vm.search.name" )
+                h5 Price
+                form.form-inline
+                    .input-group.filter__col-48
+                        .input-group-addon min
+                        input.form-control.input-sm(type="number" ng-model="vm.search.price.min")
+                    .input-group.filter__col-48
+                        .input-group-addon max
+                        input.form-control.input-sm(type="number" ng-model="vm.search.price.max" data-ng-change="vm.updateProds()")
+                h5 tags
+                tags-input(
+                ng-model="vm.search.tags"
+                onTagAdded="vm.updateProds()"
+                placeholder="Введите теги"
+                addFromAutocompleteOnly="true"
                 )
+                    auto-complete(source="vm.loadTags($query)" min-length="1")
+                p.text-right
+                    a.btn.btn-link.btn-sm(href="" data-ng-click="vm.resetFilter()") Reset filter

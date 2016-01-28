@@ -6,9 +6,29 @@ html
         title Магазин желаний
         //link(href='https://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css')
         link(href="css/styles.css",rel="stylesheet")
+        link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css")
         script(src="js/allvendor.min.js")
         script(src="js/app.js")
+        link(rel='shortcut icon', href='img/favicon.png', type='image/x-icon')
     body(ng-app="funshopApp" ng-strict-di)
         menu-root
         main-banner
         div(ui-view)
+        footer
+            .container
+                address
+                    strong.small Slava Komarov
+                    br
+                    ul.list-inline
+                        li.small Contact me at:
+                        li
+                            a(href="https://ru.linkedin.com/in/svyatoslavkomarov")
+                                i.fa.fa-linkedin-square
+                        li
+                            a(href="https://github.com/chernomord")
+                                i.fa.fa-github-square
+                        li
+                            a(href="mailto:svyatoslav.komarov@gmail.com")
+                                small or write me&nbsp;
+                                i.fa.fa-at
+                                small &nbsp;gmail.com

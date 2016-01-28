@@ -1,10 +1,12 @@
-var bannerModule        = angular.module('banner', []),
+var bannerModule        = angular.module('bannerModule', []),
     catalogueModule     = angular.module('catalogueModule', []),
+    itemModule          = angular.module('itemModule', []),
     menuRootModule      = angular.module('menuRootModule', []),
     cartModule          = angular.module('cartModule', []),
     checkOutModule      = angular.module('checkOutModule', []);
 
 var funshopApp = angular.module('funshopApp', [
+    'ngAnimate',
     'ngCookies',
     'ui.router',
     'ui.bootstrap',
@@ -12,9 +14,10 @@ var funshopApp = angular.module('funshopApp', [
     //'ngSanitize',
     'ngTagsInput',
     'catalogueModule',
-    'banner',
+    'bannerModule',
     'menuRootModule',
     'cartModule',
-    'checkOutModule'
+    'checkOutModule',
+    'itemModule'
 ]);
 

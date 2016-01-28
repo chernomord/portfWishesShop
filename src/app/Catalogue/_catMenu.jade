@@ -1,5 +1,5 @@
 section
-    nav.navbar.navbar-default.categories__nav
+    nav.navbar.navbar-default.categories__nav(data-sticky-elm='{"offset":"31", "center": "true", "zIndex":"15"}')
         .container
             .navbar-header
                 button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false")
@@ -7,19 +7,15 @@ section
                     span.icon-bar
                     span.icon-bar
                     span.icon-bar
-                .navbar-brand() V-Wishes!
+                .navbar-brand Categories
             #bs-example-navbar-collapse-1.collapse.navbar-collapse
                 ul.nav.navbar-nav
-                    li
-                        a(href="" ng-click="vm.categorySet('all')" data-cat-id="all")
-                            | Все
+                    li(ng-class="{'active': (catID == 'all') }")
+                        a(href="" ng-click="categorySet('all')" data-cat-id="all")
+                            | All
                             span.sr-only (current)
-                    li(ng-repeat='category in vm.categories')
-                        //- span.sr-only (current)
-                        a(href="" ng-click="vm.categorySet(category.id)" data-cat-id="{{category.id}}")
+                    li(ng-repeat='category in categories' ng-class="{'active': (catID == category.id) }")
+                        a(href="" ng-click="categorySet(category.id)" data-cat-id="{{category.id}}" )
                             | {{category.name}}
                             span.sr-only (current)
-                ul.nav.navbar-nav.navbar-right
-                    li
-                        cart-btn
     cat-content(data-requests="requests" data-categories="vm.categories")

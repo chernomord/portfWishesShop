@@ -1,9 +1,12 @@
 
-<div class="thumbnail"><img ng-src="{{vm.product.image}}" style="width: 100%; display: block;" class="img-responsive"/>
+<div class="thumbnail"><a ui-sref="item({ category: vm.product.categoryID, item: vm.product.uid })" role="button">
+    <image-load-indicator img-src="vm.product.image" width="100"></image-load-indicator>
+    <!--.img-loading-container-->
+    <!--    img.img-responsive(ng-src="{{vm.product.image}}", style='width: 100%; display: block;' image-load-indicator sorc="vm.product.image")--></a>
   <div class="caption">
     <h3 ng-bind="vm.product.name"></h3>
-    <p ng-bind="vm.product.description"></p>
-    <h4 ng-bind="vm.product.price | currency:'р. '"></h4>
-    <p><a href="" role="button" ng-click="vm.addItem(vm.product)" class="btn btn-primary">В миску</a>&nbsp;<a href="#" role="button" class="btn btn-default">Подробнее</a></p>
+    <p ng-bind="(vm.product.description | limitTo : 40 : begin) + '…'"></p>
+    <h4 ng-bind="vm.product.price | currency"></h4>
+    <p class="text-left"><a href="" role="button" ng-click="vm.addItem(vm.product)" class="btn btn-primary">+<span class="glyphicon glyphicon-shopping-cart"></span></a>&nbsp;<a ui-sref="item({ category: vm.product.categoryID, item: vm.product.uid })" role="button" class="btn btn-default">Details</a></p>
   </div>
 </div>

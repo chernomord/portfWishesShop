@@ -1,10 +1,12 @@
-var bannerModule        = angular.module('banner', []),
+var bannerModule        = angular.module('bannerModule', []),
     catalogueModule     = angular.module('catalogueModule', []),
+    itemModule          = angular.module('itemModule', []),
     menuRootModule      = angular.module('menuRootModule', []),
     cartModule          = angular.module('cartModule', []),
     checkOutModule      = angular.module('checkOutModule', []);
 
 var funshopApp = angular.module('funshopApp', [
+    'ngAnimate',
     'ngCookies',
     'ui.router',
     'ui.bootstrap',
@@ -12,10 +14,11 @@ var funshopApp = angular.module('funshopApp', [
     //'ngSanitize',
     'ngTagsInput',
     'catalogueModule',
-    'banner',
+    'bannerModule',
     'menuRootModule',
     'cartModule',
-    'checkOutModule'
+    'checkOutModule',
+    'itemModule'
 ]);
 
 
@@ -51,12 +54,13 @@ funshopApp.config(['$stateProvider', '$urlRouterProvider',
         $urlRouterProvider.otherwise("/catalogue");
         $stateProvider
             .state('catalogue', {
-                url: "/catalogue",
-                template: "<cat-menu><cat-content></cat-content></cat-menu>"
+                url: "/catalogue?category",
+                template: "<cat-menu></cat-menu>"
             })
-            .state('catalogue.item', {
-                url: "/item",
-                template: "<p>item</p>"
+            .state('item', {
+                url: "/catalogue/item?category&item",
+                templateUrl: "_templates/_itemPage.html",
+                controller: 'itemPageCtrl'
             })
 
             .state('about', {
@@ -92,217 +96,46 @@ funshopApp.config(['$stateProvider', '$urlRouterProvider',
             })
     }
 ]);
-bannerModule.directive('mainBanner', function()
+bannerModule.directive('mainBanner', ['$timeout', '$q', function($timeout, $q)
 {
-    return {
-        restrict: 'E',
-        scope: {},
-        templateUrl: '_templates/_banner.html'
-    }
-
-});
-cartModule.directive('cartBtn', function()
-{
-    var cartBtnCtrl = ['$scope', '$translate', '$translatePartialLoader', 'cartContainer', function($scope, $translate, $translatePartialLoader, cartContainer)
-    {
-        var vm = this;
-        //$translatePartialLoader.addPart('MenuRoot');
-        //// Language switch element
-        //this.changeLanguage = function (langKey) {
-        //    $translate.use(langKey);
-        //};
-        vm.productsCount = cartContainer.itemCount();
-        vm.isDisabled = function() {
-            return (vm.productsCount == 0)
-        };
-
-        $scope.$watch(
-            function() { return cartContainer.itemCount() },
-            function() {
-                vm.productsCount = cartContainer.itemCount();
-            },
-            true);
-    }];
+    var imgsArr = ['img/bg01.jpg','img/bg02.jpg','img/bg03.jpg'];
 
     return {
         restrict: 'E',
         scope: {},
-        controller: cartBtnCtrl,
-        controllerAs: 'vm',
-        bindToController: true,
-        templateUrl: '_templates/_cartBtn.html'
-    }
-});
-cartModule.directive('cartList', function() {
-    return {
-        restrict: 'E',
-        scope: {},
-        controller: 'cartListCtrl',
-        controllerAs: 'vm',
-        bindToController: true,
-        templateUrl: '_templates/_cartList.html'
-    }
-});
+        templateUrl: '_templates/_banner.html',
+        link: function(scope, element, attr, ctrl) {
 
-var cartListCtrl = function($state, $translate, $translatePartialLoader, productsLoader, cartContainer) {
+            // cycle through background images
+            // after all imgs preloaded
 
-    var vm = this;
+            scope.imgsDefer = [];
 
-    vm.totalCount = cartContainer.totalPrice();
-    vm.cartList = cartContainer.readItems();
-    vm.removeItemType = function(item_uid) {
-        cartContainer.removeItemType(item_uid);
-        vm.updateCartModel();
-    };
-    vm.minusItem = function(item_uid) {
-        cartContainer.minusItem(item_uid);
-        vm.updateCartModel();
-    };
-    vm.plusItem = function(item_uid) {
-        cartContainer.plusItem(item_uid);
-        vm.updateCartModel();
-    };
-    vm.emptyCart = function() {
-        cartContainer.emptyCart();
-        vm.updateCartModel();
-        $state.go('catalogue');
-    };
+            var img = [],
+                imageElm = angular.element(element[0].querySelector('.jumbotron')),
+                imN = 1;
 
-    vm.updateCartModel = function() {
-        vm.totalCount = cartContainer.totalPrice();
-        vm.cartList = cartContainer.readItems();
-        if (vm.totalCount < 1) {
-            $state.go('catalogue');
+            for (var i = 0; i < imgsArr.length; i++) {
+                img[i] = new Image();
+                img[i].src = (imgsArr[i]);
+                img[i].onload = function(event) {
+                    scope.imgsDefer.push('done');
+                    if (scope.imgsDefer.length == imgsArr.length) cycleBg(1);
+                }
+            }
+
+            function cycleBg(timeout) {
+                $timeout(function () {
+                    imN++;
+                    imageElm.css({'background-image': 'url('+ imgsArr[imN-1] + ')'});
+                    if (imN > 2) imN = 0;
+                    cycleBg(10101);
+                }, timeout);
+            }
+
         }
-    };
-
-};
-
-cartListCtrl.$inject = ['$state', '$translate', '$translatePartialLoader', 'productsLoader', 'cartContainer'];
-cartModule.controller('cartListCtrl', cartListCtrl);
-var ProductsLstCtrl = function($scope, $filter, productsLoader, $location) {
-
-    var vm = this;
-
-    vm.catID = $location.search()['category'];
-    console.log(vm.catID);
-    this.$filter = $filter;
-    this.$scope = $scope;
-    this.productsLoader = productsLoader;
-
-    var searchValues = {
-        setDefaults: function () {
-            this.name = '';
-            this.brand = '';
-            this.price = {
-                min: null,
-                max: null
-            };
-            this.tags = null;
-        }
-    };
-    searchValues.setDefaults();
-
-    productsLoader.getJSONProducts(['abstract.json', 'material.json']).then(function(results) {
-        vm.goodies = results;
-        vm.search = Object.create(searchValues);
-        vm.categories = productsLoader.getCategories();
-        vm.paginator = {
-            currentPage: 1,
-            maxSize: 8,
-            numPerPage: 9,
-            totalItems: vm.goodies.length
-        };
-
-        vm.updateProds();
-
-        $scope.$watch(
-            function watchAll() {
-                return [vm.search.tags, vm.search.price.min, vm.search.price.max, vm.search.name, vm.search.brand];
-            },
-            function() {
-                if (vm.search.price.min < 0) vm.search.price.min = 0;
-                if (vm.search.price.max < 0) vm.search.price.max = 0;
-                vm.updateProds();
-            }, true);
-    });
-};
-
-// Loads and aggregate full list of tags for tags auto-complete widget
-ProductsLstCtrl.prototype.loadTags = function(query) {
-    var allTagsList = [],
-        filteredTags = [];
-    for (var i = 0; i<this.goodies.length; i++) {
-        allTagsList.push.apply(allTagsList, this.goodies[i].tags);
     }
-    allTagsList = unique(allTagsList, 'text');
-    for (i = 0; i < allTagsList.length; i++) {
-        if (allTagsList[i].text.indexOf(query) !== -1) filteredTags.push(allTagsList[i]);
-    }
-    return filteredTags;
-};
-
-/*
-* Reset filter on click
-*/
-ProductsLstCtrl.prototype.resetFilter = function() {
-    this.search.setDefaults();
-};
-
-/*
-* Updating filter from inside of the controller
-* TODO: Move the function into separate service for the sake of sleek controller code
-*/
-ProductsLstCtrl.prototype.updateFilter = function(products, search, pgn) {
-    var results;
-    results = this.$filter('filter')(products, {name: search.name, brand: search.brand});
-    results = this.$filter('byRange')(results, search.price, 'price');
-    results = this.$filter('byTags')(results, search.tags, 'tags');
-    pgn.totalItems = results.length;
-    var begin = ((pgn.currentPage - 1) * pgn.numPerPage),
-        end = begin + pgn.numPerPage;
-    results = results.slice(begin, end);
-    return results;
-};
-
-// update filtered products on model change
-ProductsLstCtrl.prototype.updateProds = function() {
-    this.filteredGoodies = this.updateFilter(this.goodies, this.search, this.paginator);
-};
-
-ProductsLstCtrl.$inject = ['$scope', '$filter', 'productsLoader', '$location'];
-
-catalogueModule.controller('ProductsLstCtrl', ProductsLstCtrl);
-catalogueModule.directive('catalogue', function()
-{
-    return {
-        restrict: 'E',
-        transclude: true,
-        scope: {
-            catID: "@"
-        },
-        templateUrl: '_templates/_catalogue.html',
-        controller: 'ProductsLstCtrl',
-        controllerAs: 'vm',
-        bindToController: true
-    }
-});
-
-
-//
-//catalogueModule.directive('catalogue', function()
-//{
-//    return {
-//        restrict: 'E',
-//        transclude: true,
-//        scope: {
-//        },
-//        templateUrl: '_templates/_catalogue.html',
-//        controller: 'ProductsLstCtrl',
-//        controllerAs: 'prods',
-//        bindToController: true
-//    }
-//});
+}]);
 catalogueModule.filter('byRange', function() {
     return function(input, rangeObj, prop) {
         var results = [];
@@ -375,6 +208,8 @@ catalogueModule.directive('catContent', function()
 
         var vm = this;
 
+        vm.loadFinished = false;
+
         //vm.catID = $scope.catId;
 
         var searchValues = {
@@ -389,14 +224,17 @@ catalogueModule.directive('catContent', function()
             }
         };
         searchValues.setDefaults();
+        vm.search = Object.create(searchValues);
+
 
         $scope.$watch(function(){return vm.requests}, function () {
 
             if(vm.requests) {
+                vm.loadFinished = false;
 
                 productsLoader.getJSONProducts(vm.requests).then(function(results) {
                     vm.goodies = results;
-                    vm.search = Object.create(searchValues);
+
                     //vm.categories = vm.categories;
                     vm.paginator = {
                         currentPage: 1,
@@ -406,6 +244,7 @@ catalogueModule.directive('catContent', function()
                     };
 
                     vm.updateProds();
+                    vm.loadFinished = true;
 
                     $scope.$watch(
                         function watchAll() {
@@ -442,6 +281,12 @@ catalogueModule.directive('catContent', function()
             vm.search.setDefaults();
         };
 
+        vm.setOrder = function(param) {
+
+            (param == 'alph') ? $scope.priceReverse = null : $scope.alphReverse = null;
+            vm.updateProds();
+        };
+
         /*
          * Updating filter from inside of the controller
          */
@@ -450,6 +295,12 @@ catalogueModule.directive('catContent', function()
             results = $filter('filter')(products, {name: search.name, brand: search.brand});
             results = $filter('byRange')(results, search.price, 'price');
             results = $filter('byTags')(results, search.tags, 'tags');
+            if ($scope.alphReverse || ($scope.alphReverse == false)) {
+                results = $filter('orderBy')(results, 'name', $scope.alphReverse);
+            }
+            if ($scope.priceReverse || ($scope.priceReverse == false)) {
+                results = $filter('orderBy')(results, 'price',$scope.priceReverse);
+            }
             pgn.totalItems = results.length;
             var begin = ((pgn.currentPage - 1) * pgn.numPerPage),
                 end = begin + pgn.numPerPage;
@@ -477,99 +328,40 @@ catalogueModule.directive('catContent', function()
         templateUrl: '_templates/_catContent.html'
     }
 });
-catalogueModule.directive('catMenu', ['$timeout', '$location', function($timeout,$location) {
+catalogueModule.directive('catMenu', ['$window', function($window) {
 
-    var location = $location.search();
-    var catID= 'all';
+    var catMenuCtrl = ['cartContainer','productsLoader','$scope','$state','$stateParams',
+        function(cartContainer,productsLoader,$scope,$state,$stateParams) {
 
+        var vm = $scope;
 
-    var catMenuCtrl = ['$q','cartContainer','productsLoader', '$scope', function($q, cartContainer, productsLoader, $scope) {
-
-        var vm = this;
-
-        $scope.catID = catID;
+        if ($stateParams.category) {
+            vm.catID = $stateParams.category;
+        } else {
+            vm.catID = 'all';
+        }
 
         productsLoader.getJSONCategories().then(function(results){
             vm.categories = results;
-            $scope.setRequests = function (catID) {
-                var requests = [];
-                for (var i =0; i < results.length; i++) {
-                    if (results[i].id == catID || catID=="all") {
-                        requests.push(results[i].http_request);
-                    }
+
+            vm.requests = [];
+            for (var i =0; i < results.length; i++) {
+                if (results[i].id == vm.catID || vm.catID=="all") {
+                    vm.requests.push(results[i].http_request);
                 }
-                return requests;
             }
+            vm.categorySet = function (newcatID) {
+                vm.catID = newcatID;
+                $state.go('catalogue', { category: newcatID });
+            };
         });
-
-        vm.categorySet = function (newcatID) {
-            $scope.catID = newcatID;
-            $scope.requests = $scope.setRequests(newcatID);
-        };
-
-
     }];
-
-    var linkFn = function(scope, element, attrs) {
-
-        element.find('ul').on('click', function (event)  {
-            var elem = angular.element(event.target);
-            var cat_id = elem.attr('data-cat-id');
-            scope.$apply(function(){
-                $location.search('category',cat_id);
-            });
-            elem.parent().parent().children().removeClass('active');
-            elem.parent().addClass('active');
-
-        });
-
-        scope.$watch('vm.categories', function(newValue,oldValue){
-            if (newValue){
-
-                var link = element.find('a');
-                $timeout(function(){
-                    if (location.category && (location.category < link.length)) {
-                        catID = location.category;
-                        scope.catID = location.category;
-                        scope.requests = scope.setRequests(catID);
-                    }
-                    else {
-                        catID = "all";
-                        scope.catID ='all';
-                        scope.requests = scope.setRequests(catID);
-                    }
-                    for (var i=0; i<link.length; i++) {
-                        var elem = angular.element(link[i]);
-                        if (link.eq(i).attr('data-cat-id') == catID) {
-                            scope.$apply(function(){
-                                $location.search('category',elem.attr('data-cat-id'));
-                            });
-                            link.eq(i).parent().addClass('active');
-                        }
-                    }
-                });
-
-                //link.on('click', function(event){
-                //    var elem = angular.element(this);
-                //    var cat_id = elem.attr('data-cat-id');
-                //    scope.$apply(function(){
-                //        $location.search('category',cat_id);
-                //    });
-                //    elem.parent().parent().children().removeClass('active');
-                //    elem.parent().addClass('active');
-                //});
-            }
-        });
-    };
 
     return {
         transclude: true,
         restrict: 'E',
         scope: {},
         controller: catMenuCtrl,
-        controllerAs: 'vm',
-        bindToController: true,
-        link: linkFn,
         templateUrl: '_templates/_catMenu.html'
     }
 }]);
@@ -583,9 +375,11 @@ catalogueModule.directive('productCard', function()
             var item4cart = {
                 uid: item.uid,
                 name: item.name,
+                image: item.image,
                 description: item.description,
                 qty: 1,
-                price: item.price
+                price: item.price,
+                categoryID: item.categoryID
             };
             cartContainer.addItem(item4cart);
         }
@@ -603,6 +397,150 @@ catalogueModule.directive('productCard', function()
         templateUrl: '_templates/_productCard.html'
     }
 });
+cartModule.directive('cartBtn', ['$timeout', function($timeout)
+{
+    var cartBtnCtrl = ['$scope', '$translate', '$translatePartialLoader', 'cartContainer', function($scope, $translate, $translatePartialLoader, cartContainer)
+    {
+        var vm = this;
+        //$translatePartialLoader.addPart('MenuRoot');
+        //// Language switch element
+        //this.changeLanguage = function (langKey) {
+        //    $translate.use(langKey);
+        //};
+        vm.productsCount = cartContainer.itemCount();
+        vm.isDisabled = function() {
+            return (vm.productsCount == 0)
+        };
+
+        $scope.$watch(
+            function() { return cartContainer.itemCount() },
+            function() {
+                vm.productsCount = cartContainer.itemCount();
+            },
+            true);
+    }];
+
+    return {
+        restrict: 'E',
+        scope: {},
+        controller: cartBtnCtrl,
+        controllerAs: 'vm',
+        bindToController: true,
+        templateUrl: '_templates/_cartBtn.html',
+        link: function(scope, element, attr, ctrl) {
+            var btnEl = element.find('button'),
+                badge = angular.element(element[0].querySelector('.badge')),
+                timer = null,
+                defColor = btnEl.css('background-color'),
+                plusColor = '#5CBA5F',
+                minusColor = '#F4A82B';
+
+            var modelChanged = function (newVal, oldVal) {
+
+                if(timer){
+                    $timeout.cancel(timer);
+                    timer = null;
+                }
+
+                if (newVal > oldVal) {
+                    btnEl.css({'background-color': plusColor, 'border-color': plusColor});
+                    badge.css({'color': plusColor});
+                } else {
+                    btnEl.css({'background-color': minusColor, 'border-color': minusColor});
+                    badge.css({'color': minusColor});
+                }
+
+                timer = $timeout(function() {
+                    btnEl.css({'background-color':defColor,'border-color':defColor});
+                    badge.css({'color': defColor});
+                }, 200);
+
+            };
+
+            scope.$watch(function(){ return scope.vm.productsCount; }, modelChanged);
+        }
+    }
+}]);
+cartModule.directive('cartListConfirm', ['$document', function($document) {
+    return {
+        restrict: 'A',
+        require: '?ngModel',
+        transclude: true,
+        template: '<div ng-transclude></div>',
+        //scope: {
+        //},
+        link: function (scope, element, attr, ctrl) {
+            scope.confirmShow = false;
+            //element.find('button').bind('click', function(){
+            //    scope.confirmShow = !scope.confirmShow;
+            //    console.log(scope.confirmShow);
+            //});
+            scope.toggleSelect = function(){
+                scope.confirmShow = !scope.confirmShow;
+            };
+            $document.bind('click', function(event){
+                var isClickedElementChildOfPopup = angular
+                        .element(element[0].contains(event.target))
+                        .length > 0;
+
+                if (isClickedElementChildOfPopup)
+                    return;
+
+                scope.$apply(function(){
+                    scope.confirmShow = false;
+                });
+            });
+
+        }
+    }
+}]);
+cartModule.directive('cartList', function() {
+    return {
+        restrict: 'E',
+        scope: {},
+        controller: 'cartListCtrl',
+        controllerAs: 'vm',
+        bindToController: true,
+        templateUrl: '_templates/_cartList.html'
+    }
+});
+
+var cartListCtrl = function($state, $translate, $translatePartialLoader, productsLoader, cartContainer) {
+
+    var vm = this;
+
+    vm.totalCount = cartContainer.totalPrice();
+    vm.cartList = cartContainer.readItems();
+    vm.removeItemType = function(item_uid) {
+        cartContainer.removeItemType(item_uid);
+        vm.updateCartModel();
+    };
+    vm.minusItem = function(item_uid) {
+        cartContainer.minusItem(item_uid);
+        vm.updateCartModel();
+    };
+    vm.plusItem = function(item_uid) {
+        cartContainer.plusItem(item_uid);
+        vm.updateCartModel();
+    };
+    vm.emptyCart = function() {
+        cartContainer.emptyCart();
+        vm.updateCartModel();
+        $state.go('catalogue');
+    };
+
+    vm.updateCartModel = function() {
+        vm.totalCount = cartContainer.totalPrice();
+        vm.cartList = cartContainer.readItems();
+        if (vm.totalCount < 1) {
+            $state.go('catalogue');
+        }
+    };
+
+};
+
+cartListCtrl.$inject = ['$state', '$translate', '$translatePartialLoader', 'productsLoader', 'cartContainer'];
+cartModule.controller('cartListCtrl', cartListCtrl);
 checkOutModule.directive('checkOut', function() {
     return {
         restrict: 'E',
@@ -638,6 +576,55 @@ checkOutModule.controller('checkoutConfirmModalCtrl', ['$uibModalInstance', func
     };
 
 }]);
+var itemPageCtrl = function($state, $translate, $translatePartialLoader, productsLoader, $stateParams, $scope, cartContainer) {
+
+    var currentCategoryID = $stateParams.category;
+    var currentItemID = $stateParams.item;
+
+    var vm = $scope;
+
+    $scope.maxQty = [1,2,3,4,5];
+
+    productsLoader.getJSONCategories().then(function(categories){
+        var request= [];
+        var categoryName;
+        for (var i =0; i < categories.length; i++) {
+            if (categories[i].id == currentCategoryID) {
+                request = categories[i].http_request;
+                categoryName = categories[i].name;
+            }
+        }
+        if ( !request ) { $state.go('catalogue'); }
+
+        productsLoader.getJSONProducts(request).then(function(items) {
+            for (var n =0; n < items.length; n++) {
+                if (items[n].uid == currentItemID) { $scope.item = items[n]; }
+            }
+            if (!$scope.item) { $state.go('catalogue'); }
+
+            $scope.item.categoryName =  categoryName;
+            $scope.item.qty = 1;
+
+        })
+    });
+
+    $scope.addItem = function(item) {
+        var item4cart = {
+            uid: item.uid,
+            name: item.name,
+            image: item.image,
+            description: item.description,
+            qty: item.qty,
+            price: item.price,
+            categoryID: item.categoryID
+        };
+        cartContainer.addItem(item4cart);
+    };
+
+};
+
+itemPageCtrl.$inject = ['$state', '$translate', '$translatePartialLoader', 'productsLoader', '$stateParams', '$scope', 'cartContainer'];
+itemModule.controller('itemPageCtrl', itemPageCtrl);
 /**
  * Created by Slava on 11.01.2016.
  */
@@ -701,7 +688,8 @@ funshopApp.factory('cartContainer', ['$cookies', function($cookies){
                 }
             }
             if (!found) {
-                newItem.qty = 1;
+                if (!newItem.qty) { newItem.qty = 1; }
+                newItem.description = newItem.description.slice(0,51);
                 this.items.push(newItem);
             }
         },
@@ -711,7 +699,7 @@ funshopApp.factory('cartContainer', ['$cookies', function($cookies){
                     var qty = this.items[i].qty;
                     this.items[i].qty = qty - 1;
                     if (this.items[i].qty < 1 ) {
-                        this.items.splice(i,1)
+                        this.items[i].qty = 1;
                     }
                 }
             }
@@ -765,9 +753,61 @@ funshopApp.factory('cartContainer', ['$cookies', function($cookies){
         }
     };
 }]);
-/**
- * Created by Slava on 21.11.2015.
- */
+funshopApp.directive('imageLoadIndicator', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            src: '=imgSrc',
+            width: '='
+        },
+        template:
+        '<div class="img-loading-container">' +
+        '<div class="content-container">' +
+        '<div class="spinner"></div>' +
+        '<img ng-src="{{src}}" width="{{width}}' + '%" height="auto">' +
+        '</div></div>',
+
+
+        link: function(scope, element) {
+            element.find('img').on('load', function() {
+                element.children().addClass('loaded');
+            });
+            //scope.$watch('src', function() {
+            //    element.children().removeClass('loaded');
+            //}, true);
+        }
+    };
+});
+funshopApp.directive('integerRestrict', function() {
+    return {
+        restrict: 'A',
+        scope: {},
+        require: 'ngModel',
+        link: function (scope, element, attr, ngModelCtrl) {
+
+            var pattern = /[^0-9]*/g;
+
+            function fromUser(text) {
+                if (!text) {
+                    ngModelCtrl.$setViewValue('1');
+                    ngModelCtrl.$render();
+                    return 1;
+                } else {
+
+                    var transformedInput = text.replace(pattern, '');
+                    if ((transformedInput !== text)) {
+                        ngModelCtrl.$setViewValue(transformedInput);
+                        ngModelCtrl.$render();
+                    }
+                    transformedInput = parseInt(transformedInput, 10);
+                    return transformedInput;
+                }
+            }
+
+            ngModelCtrl.$parsers.push(fromUser);
+        }
+    }
+});
 //function uniq(a) {
 //    var seen = {};
 //    return a.filter(function(item) {
@@ -797,34 +837,25 @@ function unique(input, prop){
 }
 funshopApp.factory('productsLoader', ['$http', '$q', function($http, $q){
     var local_storage = [];
-    var local_categories = [];
-    //local_categories = categories;
+    var local_categories;
     return {
-        //getProducts: function(requests_array) {
-        //    var items = [];
-        //    var request;
-        //    for (var i=0; i<requests_array.length; i++) {
-        //        request = requests_array[i];
-        //        items = window[request];
-        //        for (var n=0; n< items.length; n++) {
-        //            local_storage.push(items[n]);
-        //        }
-        //    }
-        //    return local_storage;
-        //},
-        //getCategories: function() {
-        //    return local_categories;
-        //},
         getJSONProducts: function(requests_array) {
             var items = [];
             var requests = [];
             var defer = $q.defer();
-            for (var i=0; i<requests_array.length; i++) {
-                requests[i] = $http.get("data/" + requests_array[i], [cache=true]);
-            }
+
+            // transform #requests depending on type then form http calls array
+            if( Object.prototype.toString.call( requests_array ) === '[object Array]' ) {
+                for (var i=0; i<requests_array.length; i++) {
+                    requests[i] = $http.get("data/" + requests_array[i], [cache=true]);
+                }
+            } else { requests.push($http.get("data/" + requests_array, [cache=true]))}
+
+            // send batch http request for data
             $q.all(requests).then(function(results_array) {
                 for (var n=0; n< results_array.length; n++) {
                     for (var d=0; d < results_array[n].data.length; d++) {
+                        results_array[n].data[d].price = parseInt(results_array[n].data[d].price, 10);
                         items.push(results_array[n].data[d]);
                     }
                 }
@@ -838,14 +869,80 @@ funshopApp.factory('productsLoader', ['$http', '$q', function($http, $q){
         },
         getJSONCategories: function() {
             var defer = $q.defer();
-            $http.get("data/categories.json", [cache=true]).then(function(results){
-                defer.resolve(results.data);
-            }, function (error) {
-                defer.reject(error);
-            }, function (update) {
-                defer.update(update);
-            });
-            return defer.promise;
+            if (!local_categories) {
+                $http.get("data/categories.json", [cache = true]).then(function (results) {
+                    local_categories = results.data;
+                    defer.resolve(local_categories);
+                }, function (error) {
+                    defer.reject(error);
+                }, function (update) {
+                    defer.update(update);
+                });
+                return defer.promise;
+            } else {
+                defer.resolve(local_categories);
+                return defer.promise;
+            }
         }
     }
+}]);
+funshopApp.directive('stickyElm', ['$window', function($window){
+
+    var linkFn = function(scope, element, attrs) {
+
+        // Sticky scroll
+        /*
+        * Avialable parameters:
+        * #params.offset = integer
+        * #params.center = boolean
+        * #params.zIndex = integer
+        * passed as json object
+        */
+        var offset = 0,
+            center = true,
+            zIndex = 10,
+            windowEl = angular.element($window),
+            initYOffset = element[0].getBoundingClientRect().top,
+            left, right;
+
+        if (!((scope.params == 'sticky-elm') || (scope.params == 'data-sticky-elm')))
+        {
+            var params = JSON.parse(scope.params);
+            offset = parseInt(params.offset, 10);
+            center = (params.center == 'true');
+            zIndex = params.zIndex;
+        }
+        element.initHeight = element[0].offsetHeight + parseInt(window.getComputedStyle(element[0]).marginBottom, 10);
+
+        if (center) {
+            left = 0; right = 0;
+        } else {
+            left = 'auto'; right = 'auto';
+        }
+
+        var handler = function ()
+        {
+            if ( (initYOffset <= ($window.pageYOffset + offset)) && initYOffset >= 0 ) {
+                element.css({'position': 'fixed', 'top': offset +'px', 'left': left, 'right': right, 'z-index': zIndex});
+                (offset == 0) ? element.parent().parent().css('padding-top', element.initHeight + 'px') : element.parent().css('padding-top', element.initHeight + 'px');
+            } else {
+                element.css({'position': 'relative', 'top': '0'});
+                (offset == 0) ? element.parent().parent().css('padding-top', '0') : element.parent().css('padding-top', '0');
+            }
+        };
+
+        windowEl.on('scroll', scope.$apply.bind(scope, handler));
+
+        handler();
+
+    };
+
+    return {
+        restrict: 'A',
+        scope: {
+            params: "@stickyElm"
+        },
+        link: linkFn
+    }
+
 }]);

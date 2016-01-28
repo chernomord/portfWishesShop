@@ -4,6 +4,8 @@ catalogueModule.directive('catContent', function()
 
         var vm = this;
 
+        vm.loadFinished = false;
+
         //vm.catID = $scope.catId;
 
         var searchValues = {
@@ -18,14 +20,17 @@ catalogueModule.directive('catContent', function()
             }
         };
         searchValues.setDefaults();
+        vm.search = Object.create(searchValues);
+
 
         $scope.$watch(function(){return vm.requests}, function () {
 
             if(vm.requests) {
+                vm.loadFinished = false;
 
                 productsLoader.getJSONProducts(vm.requests).then(function(results) {
                     vm.goodies = results;
-                    vm.search = Object.create(searchValues);
+
                     //vm.categories = vm.categories;
                     vm.paginator = {
                         currentPage: 1,
@@ -35,6 +40,7 @@ catalogueModule.directive('catContent', function()
                     };
 
                     vm.updateProds();
+                    vm.loadFinished = true;
 
                     $scope.$watch(
                         function watchAll() {
@@ -71,6 +77,12 @@ catalogueModule.directive('catContent', function()
             vm.search.setDefaults();
         };
 
+        vm.setOrder = function(param) {
+
+            (param == 'alph') ? $scope.priceReverse = null : $scope.alphReverse = null;
+            vm.updateProds();
+        };
+
         /*
          * Updating filter from inside of the controller
          */
@@ -79,6 +91,12 @@ catalogueModule.directive('catContent', function()
             results = $filter('filter')(products, {name: search.name, brand: search.brand});
             results = $filter('byRange')(results, search.price, 'price');
             results = $filter('byTags')(results, search.tags, 'tags');
+            if ($scope.alphReverse || ($scope.alphReverse == false)) {
+                results = $filter('orderBy')(results, 'name', $scope.alphReverse);
+            }
+            if ($scope.priceReverse || ($scope.priceReverse == false)) {
+                results = $filter('orderBy')(results, 'price',$scope.priceReverse);
+            }
             pgn.totalItems = results.length;
             var begin = ((pgn.currentPage - 1) * pgn.numPerPage),
                 end = begin + pgn.numPerPage;

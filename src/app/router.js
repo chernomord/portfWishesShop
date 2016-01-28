@@ -3,12 +3,13 @@ funshopApp.config(['$stateProvider', '$urlRouterProvider',
         $urlRouterProvider.otherwise("/catalogue");
         $stateProvider
             .state('catalogue', {
-                url: "/catalogue",
-                template: "<cat-menu><cat-content></cat-content></cat-menu>"
+                url: "/catalogue?category",
+                template: "<cat-menu></cat-menu>"
             })
-            .state('catalogue.item', {
-                url: "/item",
-                template: "<p>item</p>"
+            .state('item', {
+                url: "/catalogue/item?category&item",
+                templateUrl: "_templates/_itemPage.html",
+                controller: 'itemPageCtrl'
             })
 
             .state('about', {
