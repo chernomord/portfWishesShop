@@ -1,13 +1,14 @@
 
 <section>
   <div class="container">
-    <h1>Оформление заказа</h1>
-    <p>Пожалуйста, нажмите кнопку подтверждения заказа и он будет немедленно отправлен в службу исполнения желаний. Будем считать что мы знаем ваш адрес и все такое. Ведь это ваши желания ;)</p>
-    <h3>Ваш заказ</h3>
+    <h1>Check out</h1>
+    <p>Please, press the button below to confirm your order then it will be immedieatly sent to our abstract cosmic human wishes system Lets pretend that we know who your are and where to deliver this order...</p>
+    <h3>Your order</h3>
     <ul>
-      <li ng-repeat="item in vm.cartList">{{ item.name }} &ndash;&nbsp;<b>{{ item.qty }} шт.</b></li>
+      <li ng-repeat="item in vm.cartList">{{ item.name }} &ndash;&nbsp;<b>{{ item.qty }} qty.</b></li>
     </ul>
-    <h3>На сумму:&nbsp;<span ng-bind="vm.totalCount | currency"></span></h3>
-    <p><a href="#" ui-sref="checkOut.confirm" class="btn btn-primary btn-lg">Исполнить все желания</a></p>
+    <h3>Total amount:&nbsp;<span ng-bind="vm.totalCount | currency"></span></h3>
+    <p>Actually, all items are free of charge.</p>
+    <p><a href="#" ui-sref="checkOut.confirm" class="btn btn-primary btn-lg">Make my wishes come true</a></p>
   </div>
 </section>

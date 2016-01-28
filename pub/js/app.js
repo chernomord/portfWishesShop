@@ -136,6 +136,150 @@ bannerModule.directive('mainBanner', ['$timeout', '$q', function($timeout, $q)
         }
     }
 }]);
+cartModule.directive('cartBtn', ['$timeout', function($timeout)
+{
+    var cartBtnCtrl = ['$scope', '$translate', '$translatePartialLoader', 'cartContainer', function($scope, $translate, $translatePartialLoader, cartContainer)
+    {
+        var vm = this;
+        //$translatePartialLoader.addPart('MenuRoot');
+        //// Language switch element
+        //this.changeLanguage = function (langKey) {
+        //    $translate.use(langKey);
+        //};
+        vm.productsCount = cartContainer.itemCount();
+        vm.isDisabled = function() {
+            return (vm.productsCount == 0)
+        };
+
+        $scope.$watch(
+            function() { return cartContainer.itemCount() },
+            function() {
+                vm.productsCount = cartContainer.itemCount();
+            },
+            true);
+    }];
+
+    return {
+        restrict: 'E',
+        scope: {},
+        controller: cartBtnCtrl,
+        controllerAs: 'vm',
+        bindToController: true,
+        templateUrl: '_templates/_cartBtn.html',
+        link: function(scope, element, attr, ctrl) {
+            var btnEl = element.find('button'),
+                badge = angular.element(element[0].querySelector('.badge')),
+                timer = null,
+                defColor = btnEl.css('background-color'),
+                plusColor = '#5CBA5F',
+                minusColor = '#F4A82B';
+
+            var modelChanged = function (newVal, oldVal) {
+
+                if(timer){
+                    $timeout.cancel(timer);
+                    timer = null;
+                }
+
+                if (newVal > oldVal) {
+                    btnEl.css({'background-color': plusColor, 'border-color': plusColor});
+                    badge.css({'color': plusColor});
+                } else {
+                    btnEl.css({'background-color': minusColor, 'border-color': minusColor});
+                    badge.css({'color': minusColor});
+                }
+
+                timer = $timeout(function() {
+                    btnEl.css({'background-color':defColor,'border-color':defColor});
+                    badge.css({'color': defColor});
+                }, 200);
+
+            };
+
+            scope.$watch(function(){ return scope.vm.productsCount; }, modelChanged);
+        }
+    }
+}]);
+cartModule.directive('cartListConfirm', ['$document', function($document) {
+    return {
+        restrict: 'A',
+        require: '?ngModel',
+        transclude: true,
+        template: '<div ng-transclude></div>',
+        //scope: {
+        //},
+        link: function (scope, element, attr, ctrl) {
+            scope.confirmShow = false;
+            //element.find('button').bind('click', function(){
+            //    scope.confirmShow = !scope.confirmShow;
+            //    console.log(scope.confirmShow);
+            //});
+            scope.toggleSelect = function(){
+                scope.confirmShow = !scope.confirmShow;
+            };
+            $document.bind('click', function(event){
+                var isClickedElementChildOfPopup = angular
+                        .element(element[0].contains(event.target))
+                        .length > 0;
+
+                if (isClickedElementChildOfPopup)
+                    return;
+
+                scope.$apply(function(){
+                    scope.confirmShow = false;
+                });
+            });
+
+        }
+    }
+}]);
+cartModule.directive('cartList', function() {
+    return {
+        restrict: 'E',
+        scope: {},
+        controller: 'cartListCtrl',
+        controllerAs: 'vm',
+        bindToController: true,
+        templateUrl: '_templates/_cartList.html'
+    }
+});
+
+var cartListCtrl = function($state, $translate, $translatePartialLoader, productsLoader, cartContainer) {
+
+    var vm = this;
+
+    vm.totalCount = cartContainer.totalPrice();
+    vm.cartList = cartContainer.readItems();
+    vm.removeItemType = function(item_uid) {
+        cartContainer.removeItemType(item_uid);
+        vm.updateCartModel();
+    };
+    vm.minusItem = function(item_uid) {
+        cartContainer.minusItem(item_uid);
+        vm.updateCartModel();
+    };
+    vm.plusItem = function(item_uid) {
+        cartContainer.plusItem(item_uid);
+        vm.updateCartModel();
+    };
+    vm.emptyCart = function() {
+        cartContainer.emptyCart();
+        vm.updateCartModel();
+        $state.go('catalogue');
+    };
+
+    vm.updateCartModel = function() {
+        vm.totalCount = cartContainer.totalPrice();
+        vm.cartList = cartContainer.readItems();
+        if (vm.totalCount < 1) {
+            $state.go('catalogue');
+        }
+    };
+
+};
+
+cartListCtrl.$inject = ['$state', '$translate', '$translatePartialLoader', 'productsLoader', 'cartContainer'];
+cartModule.controller('cartListCtrl', cartListCtrl);
 catalogueModule.filter('byRange', function() {
     return function(input, rangeObj, prop) {
         var results = [];
@@ -397,150 +541,6 @@ catalogueModule.directive('productCard', function()
         templateUrl: '_templates/_productCard.html'
     }
 });
-cartModule.directive('cartBtn', ['$timeout', function($timeout)
-{
-    var cartBtnCtrl = ['$scope', '$translate', '$translatePartialLoader', 'cartContainer', function($scope, $translate, $translatePartialLoader, cartContainer)
-    {
-        var vm = this;
-        //$translatePartialLoader.addPart('MenuRoot');
-        //// Language switch element
-        //this.changeLanguage = function (langKey) {
-        //    $translate.use(langKey);
-        //};
-        vm.productsCount = cartContainer.itemCount();
-        vm.isDisabled = function() {
-            return (vm.productsCount == 0)
-        };
-
-        $scope.$watch(
-            function() { return cartContainer.itemCount() },
-            function() {
-                vm.productsCount = cartContainer.itemCount();
-            },
-            true);
-    }];
-
-    return {
-        restrict: 'E',
-        scope: {},
-        controller: cartBtnCtrl,
-        controllerAs: 'vm',
-        bindToController: true,
-        templateUrl: '_templates/_cartBtn.html',
-        link: function(scope, element, attr, ctrl) {
-            var btnEl = element.find('button'),
-                badge = angular.element(element[0].querySelector('.badge')),
-                timer = null,
-                defColor = btnEl.css('background-color'),
-                plusColor = '#5CBA5F',
-                minusColor = '#F4A82B';
-
-            var modelChanged = function (newVal, oldVal) {
-
-                if(timer){
-                    $timeout.cancel(timer);
-                    timer = null;
-                }
-
-                if (newVal > oldVal) {
-                    btnEl.css({'background-color': plusColor, 'border-color': plusColor});
-                    badge.css({'color': plusColor});
-                } else {
-                    btnEl.css({'background-color': minusColor, 'border-color': minusColor});
-                    badge.css({'color': minusColor});
-                }
-
-                timer = $timeout(function() {
-                    btnEl.css({'background-color':defColor,'border-color':defColor});
-                    badge.css({'color': defColor});
-                }, 200);
-
-            };
-
-            scope.$watch(function(){ return scope.vm.productsCount; }, modelChanged);
-        }
-    }
-}]);
-cartModule.directive('cartListConfirm', ['$document', function($document) {
-    return {
-        restrict: 'A',
-        require: '?ngModel',
-        transclude: true,
-        template: '<div ng-transclude></div>',
-        //scope: {
-        //},
-        link: function (scope, element, attr, ctrl) {
-            scope.confirmShow = false;
-            //element.find('button').bind('click', function(){
-            //    scope.confirmShow = !scope.confirmShow;
-            //    console.log(scope.confirmShow);
-            //});
-            scope.toggleSelect = function(){
-                scope.confirmShow = !scope.confirmShow;
-            };
-            $document.bind('click', function(event){
-                var isClickedElementChildOfPopup = angular
-                        .element(element[0].contains(event.target))
-                        .length > 0;
-
-                if (isClickedElementChildOfPopup)
-                    return;
-
-                scope.$apply(function(){
-                    scope.confirmShow = false;
-                });
-            });
-
-        }
-    }
-}]);
-cartModule.directive('cartList', function() {
-    return {
-        restrict: 'E',
-        scope: {},
-        controller: 'cartListCtrl',
-        controllerAs: 'vm',
-        bindToController: true,
-        templateUrl: '_templates/_cartList.html'
-    }
-});
-
-var cartListCtrl = function($state, $translate, $translatePartialLoader, productsLoader, cartContainer) {
-
-    var vm = this;
-
-    vm.totalCount = cartContainer.totalPrice();
-    vm.cartList = cartContainer.readItems();
-    vm.removeItemType = function(item_uid) {
-        cartContainer.removeItemType(item_uid);
-        vm.updateCartModel();
-    };
-    vm.minusItem = function(item_uid) {
-        cartContainer.minusItem(item_uid);
-        vm.updateCartModel();
-    };
-    vm.plusItem = function(item_uid) {
-        cartContainer.plusItem(item_uid);
-        vm.updateCartModel();
-    };
-    vm.emptyCart = function() {
-        cartContainer.emptyCart();
-        vm.updateCartModel();
-        $state.go('catalogue');
-    };
-
-    vm.updateCartModel = function() {
-        vm.totalCount = cartContainer.totalPrice();
-        vm.cartList = cartContainer.readItems();
-        if (vm.totalCount < 1) {
-            $state.go('catalogue');
-        }
-    };
-
-};
-
-cartListCtrl.$inject = ['$state', '$translate', '$translatePartialLoader', 'productsLoader', 'cartContainer'];
-cartModule.controller('cartListCtrl', cartListCtrl);
 checkOutModule.directive('checkOut', function() {
     return {
         restrict: 'E',
@@ -886,7 +886,7 @@ funshopApp.factory('productsLoader', ['$http', '$q', function($http, $q){
         }
     }
 }]);
-funshopApp.directive('stickyElm', ['$window', function($window){
+funshopApp.directive('stickyElm', ['$window', '$timeout', function($window, $timeout){
 
     var linkFn = function(scope, element, attrs) {
 
@@ -898,15 +898,15 @@ funshopApp.directive('stickyElm', ['$window', function($window){
         * #params.zIndex = integer
         * passed as json object
         */
+
         var offset = 0,
             center = true,
             zIndex = 10,
             windowEl = angular.element($window),
-            initYOffset = element[0].getBoundingClientRect().top,
+            initYOffset = getOffsetTop(element[0]),
             left, right;
 
-        if (!((scope.params == 'sticky-elm') || (scope.params == 'data-sticky-elm')))
-        {
+        if (!((scope.params == 'sticky-elm') || (scope.params == 'data-sticky-elm'))) {
             var params = JSON.parse(scope.params);
             offset = parseInt(params.offset, 10);
             center = (params.center == 'true');
@@ -915,25 +915,47 @@ funshopApp.directive('stickyElm', ['$window', function($window){
         element.initHeight = element[0].offsetHeight + parseInt(window.getComputedStyle(element[0]).marginBottom, 10);
 
         if (center) {
-            left = 0; right = 0;
+            left = 0;
+            right = 0;
         } else {
-            left = 'auto'; right = 'auto';
+            left = 'auto';
+            right = 'auto';
         }
 
-        var handler = function ()
+        windowEl.on('scroll', scope.$apply.bind(scope, handler));
+
+        handler();
+
+
+        // Function
+
+        function getOffsetTop( elem )
         {
-            if ( (initYOffset <= ($window.pageYOffset + offset)) && initYOffset >= 0 ) {
-                element.css({'position': 'fixed', 'top': offset +'px', 'left': left, 'right': right, 'z-index': zIndex});
+            var offsetTop = 0;
+            do {
+                if ( !isNaN( elem.offsetTop ) )
+                {
+                    offsetTop += elem.offsetTop;
+                }
+            } while( elem = elem.offsetParent );
+            return offsetTop;
+        }
+
+        function handler() {
+            if ((initYOffset <= ($window.pageYOffset + offset)) && initYOffset >= 0) {
+                element.css({
+                    'position': 'fixed',
+                    'top': offset + 'px',
+                    'left': left,
+                    'right': right,
+                    'z-index': zIndex
+                });
                 (offset == 0) ? element.parent().parent().css('padding-top', element.initHeight + 'px') : element.parent().css('padding-top', element.initHeight + 'px');
             } else {
                 element.css({'position': 'relative', 'top': '0'});
                 (offset == 0) ? element.parent().parent().css('padding-top', '0') : element.parent().css('padding-top', '0');
             }
-        };
-
-        windowEl.on('scroll', scope.$apply.bind(scope, handler));
-
-        handler();
+        }
 
     };
 

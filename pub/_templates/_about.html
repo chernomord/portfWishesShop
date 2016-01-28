@@ -1,37 +1,79 @@
 
-<!--
-Created by Slava on 18.11.2015.
-
--->
 <section>
   <div class="container">
-    <h1>About the project</h1>
-    <p>This project created as a learning and experimental playground. The main field I want to hone my skills with it are AngularJS, authorisation mechanics and user models.</p>
-    <h2>Functionality</h2>
-    <h3><span class="label label-success">Current</span></h3>
-    <ul>
-      <li>Items catalogue</li>
-      <li>Catalogue filters</li>
-      <li>i18n (internationalization)</li>
-      <li>Cart</li>
-      <li>Checkout</li>
-    </ul>
-    <h3><span class="label label-default">Roadmap</span></h3>
-    <ul>
-      <li>Unit tests</li>
-      <li>Integrate Firebase</li>
-      <li>Login and authentication</li>
-      <li>User groups policies</li>
-      <li>Admin user group, members able to edit content</li>
-      <li>Integrate Filestack as a files CDN</li>
-      <li>Soft transitional animation</li>
-      <li>Images preloader</li>
-      <li>Pages preloader</li>
-    </ul>
-    <h3><span class="label label-default">Future goals</span></h3>
-    <ul>
-      <li>Migrate to own back-end</li>
-      <li>Upgrade to Angular 2.0</li>
-    </ul>
+    <h1 class="page-header">About the project</h1>
+    <div class="row">
+      <div class="col-md-8">
+        <p>
+          Created it for fun and to practice with Angular. At the current state of development
+          Angular is pretty well practiced and I feel the next step should be back-end integration, authentication
+          mechanics implementation on both sides of the app and content editable for admin user group.
+          In other words - less front-end, more business logic.
+        </p>
+        <h3>Tech used during development of the project</h3>
+        <ul class="list-inline tech-tags">
+          <li>Angular</li>
+          <li>Bootstrap</li>
+          <li>angular-UI</li>
+          <li>ui-router</li>
+          <li>angular-translate</li>
+          <li>ng-tags-input</li>
+          <li>Gulp</li>
+          <li>Jade</li>
+          <li>Stylus</li>
+        </ul>
+        <h3>Current functionality</h3>
+        <ul>
+          <li>Main
+            <ul>
+              <li>Catalogue</li>
+              <li>Item details</li>
+              <li>Catalogue filters</li>
+              <li>Cart</li>
+              <li>Checkout</li>
+              <li>i18n, partial (lack of translation)</li>
+            </ul>
+          </li>
+          <li>Technical
+            <ul>
+              <li>Data loaded via AJAX from JSON files</li>
+              <li>Responsive Cart button</li>
+              <li>Cart content stores in cookie</li>
+              <li>Cart item remove/clear confirmation dialogue</li>
+              <li>Cart item qty field input restricted only to integer</li>
+              <li>Img loading indicator</li>
+              <li>Sticky menus and filter</li>
+            </ul>
+          </li>
+        </ul>
+        <h3>Nearest targets</h3>
+        <ul>
+          <li>Cover with unit tests most of the core functions</li>
+          <li>Item images gallery</li>
+          <li>Page loading indicator</li>
+          <li>fully i18n (internationalization)</li>
+          <li>Move data to Firebase</li>
+          <li>Login and authentication</li>
+          <li>User groups policies</li>
+          <li>Admin user group, members able to edit content</li>
+          <li>Images preloader</li>
+          <li>Pages preloader</li>
+        </ul>
+        <h3>Future goals</h3>
+        <ul>
+          <li>Migrate to my own back-end</li>
+          <li>Upgrade to Angular 2.0</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <div class="media">
+          <div class="media-left"><img src="img/sk.jpg" width="60px" alt="It's me" class="media-object author-photo"/></div>
+          <div class="media-body">
+            <h4 class="media-heading">Slava Komarov</h4>
+            <p>You can contact me via:</p><a href="https://ru.linkedin.com/in/svyatoslavkomarov" class="btn-contact"><i class="fa fa-linkedin-square"></i></a><a href="https://github.com/chernomord" class="btn-contact"><i class="fa fa-github-square"></i></a><a href="mailto:svyatoslav.komarov@gmail.com" class="btn-contact"><i class="fa fa-at"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
