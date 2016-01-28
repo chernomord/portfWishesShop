@@ -65,7 +65,7 @@ funshopApp.config(['$stateProvider', '$urlRouterProvider',
 
             .state('about', {
                 url: "/about",
-                templateUrl: "templates/about.html"
+                templateUrl: "templates/_about.html"
             })
             .state('cart', {
                 url: "/cart",
